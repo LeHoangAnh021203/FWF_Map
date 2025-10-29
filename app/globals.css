@@ -1,0 +1,133 @@
+@tailwind base;
+
+@tailwind components;
+
+@tailwind utilities;
+
+/* Simple marquee animation for hint text */
+@keyframes marqueeLinear {
+  0% { transform: translate3d(0,0,0); }
+  100% { transform: translate3d(-50%,0,0); }
+}
+
+.marquee {
+  position: relative;
+  overflow: hidden;
+  mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
+  -webkit-mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
+}
+
+.marquee__track {
+  display: flex;
+  width: 200%; /* two copies side-by-side for seamless loop */
+  gap: 2rem;
+  animation: marqueeLinear 10s linear infinite;
+  will-change: transform;
+}
+
+/* Soft glow for hint text */
+.hint-glow { animation: hintGlow 2.2s ease-in-out infinite; }
+@keyframes hintGlow {
+  0%,100% { opacity: .78; text-shadow: 0 0 0 rgba(234,88,12,.35); }
+  50% { opacity: 1; text-shadow: 0 0 12px rgba(234,88,12,.35); }
+}
+
+/* Subtle shimmer sweep across the hint container */
+.hint-shimmer { position: relative; overflow: hidden; }
+.hint-shimmer::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  transform: translateX(-120%);
+  background: linear-gradient(120deg, transparent 30%, rgba(255,255,255,.45) 50%, transparent 70%);
+  animation: shimmer 2.4s ease-in-out infinite;
+}
+@keyframes shimmer { 100% { transform: translateX(120%); } }
+
+/* Pulse ring + ripple for circular icon buttons */
+.btn-pulse { position: relative; }
+.btn-pulse::before {
+  content: "";
+  position: absolute;
+  inset: -4px;
+  border-radius: 9999px;
+  border: 2px solid rgba(249, 115, 22, .45); /* orange-500 */
+  animation: pulseRing 1.8s ease-out infinite;
+  pointer-events: none;
+}
+@keyframes pulseRing {
+  0%   { transform: scale(.9); opacity: .65; }
+  70%  { transform: scale(1.25); opacity: 0; }
+  100% { opacity: 0; }
+}
+
+.btn-ripple { position: relative; overflow: hidden; }
+.btn-ripple::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 10px; height: 10px;
+  border-radius: 9999px;
+  background: rgba(249, 115, 22, .25);
+  transform: translate(-50%, -50%) scale(0);
+  opacity: 0;
+}
+.btn-ripple:active::after {
+  transform: translate(-50%, -50%) scale(18);
+  opacity: 1;
+  transition: transform .45s ease, opacity .8s ease;
+}
+
+/* Dedicated styling for the floating menu button */
+.menu-btn {
+  /* let Tailwind bg-* control background color */
+  backdrop-filter: blur(80px);
+  border-radius: 9999px;
+  box-shadow: 0 10px 25px rgba(0,0,0,.15);
+  transition: transform .25s ease, box-shadow .25s ease, border-color .25s ease;
+}
+.menu-btn:hover {
+  transform: translateY(-2px) scale(1.08);
+  box-shadow: 0 36px 36px rgba(249,115,22,.35);
+  border-color: rgba(249,115,22,1);
+}
+.menu-btn:active {
+  transform: translateY(0) scale(.96);
+}
+.menu-btn:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 4px rgba(222, 9, 9, 0.25), 0 16px 36px rgba(249,115,22,.35);
+}
+
+.menu-icon { transition: transform .25s ease; }
+.menu-btn:hover .menu-icon { transform: rotate(18deg) scale(1.05); }
+
+/* Auto glow to highlight the floating menu button */
+.menu-glow {
+  animation: glowLoop 1.2s ease-in-out infinite;
+}
+@keyframes glowLoop {
+  0%, 100% {
+    box-shadow: 0 10px 25px rgba(0,0,0,.15), 0 0 0 rgba(249,115,22,0);
+    filter: drop-shadow(0 0 0 rgba(249,115,22,0));
+  }
+  50% {
+    box-shadow: 0 16px 36px rgba(249,115,22,.35), 0 0 12px rgba(249,115,22,.35);
+    filter: drop-shadow(0 0 8px rgba(249,115,22,.35));
+  }
+}
+
+.marquee__item {
+  white-space: nowrap;
+}
+
+html,
+body,
+#__next {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+}
