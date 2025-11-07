@@ -198,6 +198,34 @@ const branches: Branch[] = [
     city: "Hà Nội",
   },
 
+  {
+    id: 49,
+    name: "Lotte Hanoi",
+    address:
+      "Tầng 2, Lotte Department Store, Tòa nhà Lotte Center, 54 Liễu Giai, quận Ba Đình, Hà Nội, Việt Nam",
+    phone: "0889 866 666",
+    services: ["Tư vấn", "Rửa mặt", "Mỹ phẩm"],
+    lat: 21.0322328,
+    lng: 105.6602666,
+    hours: "10:00 - 22:00",
+    mapsUrl:"https://maps.app.goo.gl/YADNRTpq8a5B8KFR9",
+    city: "Hà Nội",
+  },
+
+  {
+    id: 50,
+    name: "Vincom Plaza Bắc Từ Liêm",
+    address:
+      "Gian hàng B1-08, tầng B1, số 234 Phạm Văn Đồng, P. Phú Diễn",
+    phone: "0889 866 666",
+    services: ["Tư vấn", "Rửa mặt", "Mỹ phẩm"],
+    lat: 21.0526986,
+    lng: 105.7781333,
+    hours: "10:00 - 22:00",
+    mapsUrl:"https://maps.app.goo.gl/J5ujf3riy2yJb9Ya8",
+    city: "Hà Nội",
+  },
+
   // Hồ Chí Minh - 32 Chi Nhánh
   {
     id: 12,
