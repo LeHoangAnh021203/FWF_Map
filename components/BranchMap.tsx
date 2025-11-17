@@ -561,7 +561,7 @@ const branches: Branch[] = [
     id: 39,
     name: "Face Wash Fox - Marina",
     address:
-      "Tầng 2 - L2.03, 2 Tôn Đức Thắng, Phường Sài Gòn, Quận 1, Hồ Chí Minh 700000",
+      "Tầng 3 - L2.03, 2 Tôn Đức Thắng, Phường Sài Gòn, Quận 1, Hồ Chí Minh 700000",
     phone: "+84 889 866 666",
     services: ["Tư vấn", "Rửa mặt", "Mỹ phẩm"],
     lat: 10.7822582,
