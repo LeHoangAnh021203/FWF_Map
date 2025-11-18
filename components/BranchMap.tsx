@@ -754,6 +754,7 @@ export default function BranchMap() {
 
     try {
       const L = await import("leaflet");
+      const vietmapApiKey = process.env.NEXT_PUBLIC_VIETMAP_API_KEY;
 
       // Check if container is already initialized
       if (
@@ -800,15 +801,34 @@ export default function BranchMap() {
 
       const addBaseLayer = () => {
         try {
-          L.tileLayer(
-            "https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png",
-            {
-              attribution:
-                '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>',
-              subdomains: "abcd",
-              maxZoom: 19,
-            }
-          ).addTo(map);
+          if (vietmapApiKey) {
+            // VietMap raster tile layer (uses your VietMap API key)
+            // Docs: https://maps.vietmap.vn/docs/map-api/tilemap/
+            L.tileLayer(
+              // Raster Default style
+              `https://maps.vietmap.vn/maps/tiles/tm/{z}/{x}/{y}@2x.png?apikey=${vietmapApiKey}`,
+              {
+                attribution:
+                  'Map data © <a href="https://vietmap.vn">VietMap</a>',
+                maxZoom: 20,
+              }
+            ).addTo(map);
+            console.log("[v0] Using VietMap raster tiles as base layer");
+          } else {
+            // Fallback to Carto Voyager if VietMap key is missing
+            L.tileLayer(
+              "https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png",
+              {
+                attribution:
+                  '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>',
+                subdomains: "abcd",
+                maxZoom: 19,
+              }
+            ).addTo(map);
+            console.warn(
+              "[v0] NEXT_PUBLIC_VIETMAP_API_KEY not set, using Carto tiles instead"
+            );
+          }
         } catch {
           console.log("[v0] Primary tile layer failed, using fallback");
           L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
@@ -1028,10 +1048,12 @@ export default function BranchMap() {
     return () => clearTimeout(timeoutId);
   }, [searchTerm, selectedCity, selectedBranchType, selectedServices]);
 
+  // Khi map đã load xong, hiển thị tất cả chi nhánh hiện tại
   useEffect(() => {
+    if (!isMapLoaded) return;
     updateMarkers(filteredBranches);
-    fitBoundsToMarkers(filteredBranches);
-  }, [filteredBranches, updateMarkers, fitBoundsToMarkers]);
+    fitBoundsToMarkers(filteredBranches, true);
+  }, [isMapLoaded, filteredBranches, updateMarkers, fitBoundsToMarkers]);
 
   // Trigger map resize when sidebar visibility changes
   useEffect(() => {
