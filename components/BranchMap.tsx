@@ -653,18 +653,18 @@ const branches: Branch[] = [
   },
 
   
-  {
-    id: 43,
-    name: "Hạ Long - Vũng Tàu",
-    address: "Số 136 Hạ Long, Phường 2, TP Vũng Tàu",
-    phone: "0889 866 666",
-    services: ["Tư vấn", "Rửa mặt", "Mỹ phẩm"],
-    lat: 10.3399596,
-    lng: 107.072538,
-    hours: "10:00 - 20:00",
-    mapsUrl:"https://maps.app.goo.gl/1sFrAquabMLqRB4m7",
-    city: "Vũng Tàu",
-  },
+  // {
+  //   id: 43,
+  //   name: "Hạ Long - Vũng Tàu",
+  //   address: "Số 136 Hạ Long, Phường 2, TP Vũng Tàu",
+  //   phone: "0889 866 666",
+  //   services: ["Tư vấn", "Rửa mặt", "Mỹ phẩm"],
+  //   lat: 10.3399596,
+  //   lng: 107.072538,
+  //   hours: "10:00 - 20:00",
+  //   mapsUrl:"https://maps.app.goo.gl/1sFrAquabMLqRB4m7",
+  //   city: "Vũng Tàu",
+  // },
 
   // Nha Trang - 1 Chi Nhánh
   {
