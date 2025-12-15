@@ -2,7 +2,6 @@
 
 import type React from "react";
 import { useState, useEffect, useRef, useCallback } from "react";
-import Image from "next/image";
 import {
   Search,
   MapPin,
@@ -20,6 +19,7 @@ import { Input } from "./ui/input";
 import { Card, CardContent, CardHeader, CardTitle } from "./ui/card";
 import { Badge } from "./ui/badge";
 import { DialogHeader, DialogTitle } from "./ui/dialog";
+import Sidebar from "./sidebar/Sidebar";
 
 interface Branch {
   id: number;
@@ -696,6 +696,7 @@ const serviceTypes = ["Tư vấn", "Rửa mặt", "Mỹ phẩm"];
 export default function BranchMap() {
   const mapRef = useRef<HTMLDivElement>(null);
   const mapInstanceRef = useRef<MapInstance | null>(null);
+  const routeLayerRef = useRef<L.LayerGroup | null>(null);
   const [isMapLoaded, setIsMapLoaded] = useState(false);
   const [userInteracted, setUserInteracted] = useState(false);
 
@@ -713,6 +714,7 @@ export default function BranchMap() {
   const [mapError, setMapError] = useState<string | null>(null);
   const [isLoadingLocation, setIsLoadingLocation] = useState(false);
   const [hasRequestedLocation, setHasRequestedLocation] = useState(false);
+  const [userLocation, setUserLocation] = useState<{ lat: number; lng: number } | null>(null);
 
   // Generate branch slug from name for URL hash
   const generateBranchSlug = (branchName: string) => {
@@ -788,7 +790,6 @@ export default function BranchMap() {
       });
 
       const map = L.map(mapRef.current, {
-        preferCanvas: true,
         zoomAnimation: true,
         fadeAnimation: true,
         center: [21.0285, 105.8542], // Hà Nội center
@@ -860,15 +861,22 @@ export default function BranchMap() {
       setMapError(null);
       console.log("[v0] Map initialized successfully");
 
-      // Trigger resize to ensure map fills container
-      setTimeout(() => {
-        map.invalidateSize();
-      }, 100);
+      const scheduleMapResize = (delay: number) => {
+        setTimeout(() => {
+          const currentMap = mapInstanceRef.current?.map;
+          if (!currentMap) return;
+          try {
+            currentMap.invalidateSize();
+          } catch (error) {
+            console.warn("[v0] Failed to invalidate map size:", error);
+          }
+        }, delay);
+      };
 
+      // Trigger resize to ensure map fills container
+      scheduleMapResize(100);
       // Additional resize trigger after a longer delay
-      setTimeout(() => {
-        map.invalidateSize();
-      }, 500);
+      scheduleMapResize(500);
     } catch (error) {
       console.error("[v0] Failed to initialize map:", error);
       setMapError("Không thể tải bản đồ. Vui lòng thử lại.");
@@ -880,21 +888,21 @@ export default function BranchMap() {
     return L.divIcon({
       html: `
         <div style="
-          width: 30px; 
-          height: 30px; 
-        
-          border: 3px solid orange; 
-          border-radius: 50%; 
-          
+          width: 40px;
+          height: 40px;
+          border-radius: 50%;
+          box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+          background: white;
           display: flex;
           align-items: center;
           justify-content: center;
-          font-size: 16px;
-        "> <img src="/logo.png" alt="Fox Logo" style="width: 30px; height: 30px; object-fit: contain;" /></div>
+        ">
+          <img src="/logo.png" alt="Face Wash Fox" style="width: 34px; height: 34px; object-fit: contain;" />
+        </div>
       `,
       className: "fox-marker",
       iconSize: [40, 40],
-      iconAnchor: [15, 15],
+      iconAnchor: [20, 20],
     });
   }, []);
 
@@ -1140,6 +1148,10 @@ export default function BranchMap() {
 
     return () => {
       window.removeEventListener("resize", handleResize);
+      if (routeLayerRef.current) {
+        routeLayerRef.current.remove();
+        routeLayerRef.current = null;
+      }
       if (mapInstanceRef.current) {
         try {
           mapInstanceRef.current.map.remove();
@@ -1173,14 +1185,12 @@ export default function BranchMap() {
   // Tránh yêu cầu định vị nhiều lần khi remount
 
   const openDirections = (branch: Branch) => {
-    const { lat, lng, mapsUrl } = branch;
-    
-    // Nếu đã cấu hình sẵn link Google Maps cho chi nhánh thì dùng trực tiếp
-    const url = mapsUrl && mapsUrl.trim().length > 0
-      ? mapsUrl
-      : `https://www.google.com/maps/search/?api=1&query=${lat},${lng}`;
-    
-    window.open(url, '_blank');
+    setShowSidebar(true);
+    window.dispatchEvent(
+      new CustomEvent("fwf:open-directions", {
+        detail: { branchId: branch.id },
+      })
+    );
   };
 
   const getMyLocation = () => {
@@ -1235,6 +1245,8 @@ export default function BranchMap() {
         try {
           const { latitude, longitude } = position.coords;
 
+          setUserLocation({ lat: latitude, lng: longitude });
+
           if (mapInstanceRef.current) {
             const { map } = mapInstanceRef.current;
             const L = await import("leaflet");
@@ -1276,6 +1288,7 @@ export default function BranchMap() {
       },
       (error) => {
         console.error("[v0] Geolocation error:", error);
+        setUserLocation(null);
         let message = "Không thể lấy vị trí của bạn";
         switch (error.code) {
           case error.PERMISSION_DENIED:
@@ -1370,169 +1383,102 @@ export default function BranchMap() {
     popup?.setLatLng([branch.lat, branch.lng]).setContent(content).openOn(map);
   };
 
+  const previewRouteOnMap = useCallback(
+    async (
+      origin: { lat: number; lng: number; label?: string },
+      destination: { lat: number; lng: number; label?: string },
+      routeCoordinates?: [number, number][]
+    ) => {
+      if (!mapInstanceRef.current) return;
+      try {
+        const { map } = mapInstanceRef.current;
+        const L = await import("leaflet");
+
+        if (routeLayerRef.current) {
+          routeLayerRef.current.remove();
+          routeLayerRef.current = null;
+        }
+
+        const layerGroup = L.layerGroup().addTo(map);
+        routeLayerRef.current = layerGroup;
+
+        L.circleMarker([origin.lat, origin.lng], {
+          radius: 7,
+          color: "#0ea5e9",
+          fillColor: "#38bdf8",
+          fillOpacity: 0.9,
+          weight: 3,
+        })
+          .bindTooltip(origin.label ?? "Điểm bắt đầu", {
+            direction: "top",
+            offset: [0, -8],
+            opacity: 0.9,
+          })
+          .addTo(layerGroup);
+
+        L.circleMarker([destination.lat, destination.lng], {
+          radius: 8,
+          color: "#ef4444",
+          fillColor: "#f97316",
+          fillOpacity: 0.95,
+          weight: 3,
+        })
+          .bindTooltip(destination.label ?? "Điểm đến", {
+            direction: "top",
+            offset: [0, -8],
+            opacity: 0.9,
+          })
+          .addTo(layerGroup);
+
+        const routePoints: L.LatLngTuple[] =
+          routeCoordinates && routeCoordinates.length > 1
+            ? routeCoordinates.map(
+                (point) => [point[0], point[1]] as L.LatLngTuple
+              )
+            : [
+                [origin.lat, origin.lng] as L.LatLngTuple,
+                [destination.lat, destination.lng] as L.LatLngTuple,
+              ];
+
+        const polyline = L.polyline(routePoints, {
+          color: "#f97316",
+          weight: 4,
+          opacity: 0.95,
+          dashArray: routeCoordinates && routeCoordinates.length > 1 ? undefined : "8 8",
+        }).addTo(layerGroup);
+
+        map.fitBounds(polyline.getBounds(), {
+          padding: [60, 60],
+        });
+      } catch (error) {
+        console.error("[v0] previewRouteOnMap error:", error);
+      }
+    },
+    []
+  );
+
   return (
     <div className="relative h-full w-full bg-gray-900 flex !p-0 !m-0 overflow-hidden">
-      <div
-        className={`${
-          showSidebar ? (isMobile ? "w-full" : "w-96") : "w-0"
-        } transition-all duration-300 overflow-hidden bg-white border-r border-gray-300 flex flex-col z-[1001] flex-shrink-0 shadow-xl`}
-      >
-        <div
-          className="p-3 md:p-4 text-white relative"
-          style={{
-            background: "linear-gradient(to right, #f97316, #dc2626)",
-            backgroundColor: "#f97316", // fallback
-          }}
-        >
-          <div className="flex items-center justify-between mb-3 md:mb-4">
-            <div className="flex items-center gap-2">
-              <div
-                className="w-6 h-6 md:w-8 md:h-8 rounded-full flex items-center justify-center text-orange-600"
-                style={{ backgroundColor: "white" }}
-              >
-                <Image src="/logo.png" alt="Fox Logo" width={24} height={24} className="md:w-8 md:h-8" />
-              </div>
-              <h1 className="text-base md:text-lg font-bold" style={{ color: "#ffffff" }}>
-                Face Wash Fox
-              </h1>
-            </div>
-            <Button
-              variant="ghost"
-              size="icon"
-              onClick={() => setShowSidebar(false)}
-              className="text-white hover:bg-white/20 border-white/20 h-8 w-8 md:h-10 md:w-10"
-              style={{ color: "#ffffff" }}
-            >
-              <X className="h-3 w-3 md:h-4 md:w-4" />
-            </Button>
-          </div>
-          <p className="text-xs md:text-sm" style={{ color: "rgba(255, 255, 255, 0.9)" }}>
-            Bản đồ tất cả chi nhánh của nhà Cáo
-          </p>
-        </div>
-
-        <div className="p-3 md:p-4 border-b">
-          <div className="relative">
-            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-3 w-3 md:h-4 md:w-4" />
-            <Input
-              placeholder="Tìm kiếm chi nhánh..."
-              value={searchTerm}
-              onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                setSearchTerm(e.target.value)
-              }
-              className="pl-8 md:pl-10 text-sm md:text-base h-8 md:h-10"
-            />
-          </div>
-        </div>
-
-        <div className="p-3 md:p-4 border-b">
-          <label className="text-xs md:text-sm font-medium mb-2 block">
-            Lọc theo thành phố:
-          </label>
-          <div className="flex flex-wrap gap-1 md:gap-2">
-            {cities.map((city) => (
-              <Button
-                key={city}
-                variant={selectedCity === city ? "default" : "outline"}
-                size="sm"
-                onClick={() => setSelectedCity(city)}
-                className={`text-xs md:text-sm px-2 md:px-3 py-1 md:py-2 h-7 md:h-8 ${
-                  selectedCity === city ? "bg-red-500 hover:bg-red-600" : ""
-                }`}
-              >
-                {city}
-              </Button>
-            ))}
-          </div>
-        </div>
-
-        <div className="flex-1 overflow-y-auto">
-          {Object.entries(groupedBranches).map(([city, cityBranches]) => (
-            <div key={city} className="border-b">
-              <div className="p-3 md:p-4 bg-gray-50 flex items-center gap-2">
-                <h3 className="font-semibold text-gray-800 text-sm md:text-base">
-                  {city} - {cityBranches.length} Chi Nhánh
-                </h3>
-              </div>
-
-              {cityBranches.map((branch) => (
-                <div
-                  key={branch.id}
-                  className="p-3 md:p-4 border-b border-gray-100 hover:bg-gray-50 cursor-pointer transition-colors"
-                  onClick={() => {
-                    handleBranchClick(branch);
-                    // Auto-hide sidebar on mobile when clicking branch from sidebar
-                    if (isMobile) {
-                      setShowSidebar(false);
-                    }
-                  }}
-                >
-                  <div className="flex items-start gap-2 md:gap-3">
-                    <div className="w-8 h-8 md:w-10 md:h-10 bg-white rounded-full flex items-center justify-center flex-shrink-0 mt-1">
-                      <Image
-                        src="/logo.png"
-                        alt="Fox Logo"
-                        width={32}
-                        height={32}
-                        className="md:w-10 md:h-10"
-                      />
-                    </div>
-                    <div className="flex-1 min-w-0">
-                      <h4 className="font-medium text-gray-900 mb-1 text-sm md:text-base">
-                        {branch.name}
-                      </h4>
-                      <p className="text-xs md:text-sm text-gray-600 mb-2 line-clamp-2">
-                        {branch.address}
-                      </p>
-                      <div className="flex items-center gap-1 text-xs md:text-sm text-gray-500 mb-2">
-                        <Phone className="h-3 w-3" />
-                        <span>{branch.phone}</span>
-                      </div>
-                      <div className="flex items-center gap-2">
-                        <Button
-                          size="sm"
-                          variant="outline"
-                          onClick={(e: React.MouseEvent) => {
-                            e.stopPropagation();
-                            setSelectedBranch(branch);
-                            setShowBookingForm(true);
-                            // Set URL hash for shareable link
-                            window.location.hash = generateBranchSlug(branch.name);
-                            // Auto-hide sidebar on mobile when clicking booking button
-                            if (isMobile) {
-                              setShowSidebar(false);
-                            }
-                          }}
-                          className="text-xs px-2 py-1 h-6 md:h-8 flex-1"
-                        >
-                          <Calendar className="h-3 w-3 mr-1" />
-                          Đặt lịch
-                        </Button>
-                        <Button
-                          size="sm"
-                          variant="outline"
-                          onClick={(e: React.MouseEvent) => {
-                            e.stopPropagation();
-                            openDirections(branch);
-                            // Auto-hide sidebar on mobile when clicking directions button
-                            if (isMobile) {
-                              setShowSidebar(false);
-                            }
-                          }}
-                          className="text-xs px-2 py-1 h-6 md:h-8 flex-1 bg-blue-50 hover:bg-blue-100 border-blue-200"
-                        >
-                          <Route className="h-3 w-3 mr-1" />
-                          Chỉ đường
-                        </Button>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              ))}
-            </div>
-          ))}
-        </div>
-      </div>
+      <Sidebar
+        showSidebar={showSidebar}
+        isMobile={isMobile}
+        searchTerm={searchTerm}
+        selectedCity={selectedCity}
+        cities={cities}
+        allBranches={branches}
+        groupedBranches={groupedBranches}
+        userLocation={userLocation}
+        requestUserLocation={getMyLocation}
+        isLoadingLocation={isLoadingLocation}
+        onPreviewRoute={previewRouteOnMap}
+        setSearchTerm={setSearchTerm}
+        setSelectedCity={setSelectedCity}
+        setShowSidebar={setShowSidebar}
+        setSelectedBranch={setSelectedBranch}
+        setShowBookingForm={setShowBookingForm}
+        handleBranchClick={handleBranchClick}
+        generateBranchSlug={generateBranchSlug}
+      />
 
       <div className="flex-1 relative min-w-0 overflow-hidden">
         {!showSidebar && (

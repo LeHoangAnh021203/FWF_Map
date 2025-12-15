@@ -131,3 +131,59 @@ body,
 body {
   margin: 0;
 }
+
+.fox-marker {
+  position: relative;
+  width: 40px;
+  height: 40px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.fox-marker::before {
+  content: "";
+  position: absolute;
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  background: rgba(249, 115, 22, 0.25);
+  animation: foxPulse 1.8s ease-out infinite;
+  transform: translate(-50%, -50%);
+  top: 50%;
+  left: 50%;
+}
+
+.fox-marker__inner {
+  position: relative;
+  z-index: 1;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: #fff;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.25);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.fox-marker__inner img {
+  width: 34px;
+  height: 34px;
+  object-fit: contain;
+}
+
+@keyframes foxPulse {
+  0% {
+    transform: translate(-50%, -50%) scale(0.8);
+    opacity: 0.6;
+  }
+  70% {
+    transform: translate(-50%, -50%) scale(1.2);
+    opacity: 0;
+  }
+  100% {
+    transform: translate(-50%, -50%) scale(1.4);
+    opacity: 0;
+  }
+}
