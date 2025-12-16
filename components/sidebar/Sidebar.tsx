@@ -304,7 +304,7 @@ const Sidebar: React.FC<SidebarProps> = ({
       if (!vietmapApiKey) return null;
       try {
         const params = new URLSearchParams({ text: trimmed, size: "1", apikey: vietmapApiKey });
-        const res = await fetch(`https://maps.vietmap.vn/api/search?${params.toString()}`);
+        const res = await fetch(`https://maps.vietmap.vn/api/autocomplete?${params.toString()}`);
         if (!res.ok) return null;
 
         const data = await res.json();
@@ -438,14 +438,14 @@ const Sidebar: React.FC<SidebarProps> = ({
   // Re-fetch route silently when vehicle changes (if route already exists)
   useEffect(() => {
     const updateRouteForVehicle = async () => {
-      if (!routeSummary || !directionToId) return;
+      if (!directionToId) return;
       const points = await resolveRoutePoints({ quiet: true });
       if (!points) return;
       await fetchRouteAndPreview(points.origin, points.destination, { silent: true });
     };
 
     void updateRouteForVehicle();
-  }, [selectedVehicle, routeSummary, directionToId, resolveRoutePoints, fetchRouteAndPreview]);
+  }, [selectedVehicle, directionToId, resolveRoutePoints, fetchRouteAndPreview]);
 
   const handleShowRouteOnMap = useCallback(async () => {
     setCustomOriginError(null);
