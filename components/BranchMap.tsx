@@ -77,7 +77,7 @@ const branches: Branch[] = [
     lat: 20.9982419,
     lng: 105.8663047,
     hours: "10:00 - 20:00",
-    mapsUrl:"https://maps.app.goo.gl/tkXNsBTsAKNqK4Vi7",
+    mapsUrl: "https://maps.app.goo.gl/tkXNsBTsAKNqK4Vi7",
     city: "Hà Nội",
   },
   {
@@ -90,7 +90,7 @@ const branches: Branch[] = [
     lat: 21.0452304,
     lng: 105.8406443,
     hours: "10:00 - 20:00",
-    mapsUrl:"https://maps.app.goo.gl/8ScL7zTZLjXyPVdr6",
+    mapsUrl: "https://maps.app.goo.gl/8ScL7zTZLjXyPVdr6",
     city: "Hà Nội",
   },
   {
@@ -103,21 +103,22 @@ const branches: Branch[] = [
     lat: 21.0679772,
     lng: 105.8016754,
     hours: "10:00 - 20:00",
-    mapsUrl:"https://maps.app.goo.gl/vnLQHi2kY3xduffi7",
+    mapsUrl: "https://maps.app.goo.gl/vnLQHi2kY3xduffi7",
     city: "Hà Nội",
   },
-  // {
-  //   id: 6,
-  //   name: "Yên Hoa",
-  //   address: "Số 46 Yên Hoa – Tây Hồ – Hà Nội",
-  //   phone: "0889 866 666",
-  //   services: ["Tư vấn", "Rửa mặt", "Mỹ phẩm"],
-  //   lat: 21.0510172,
-  //   lng: 105.8384213,
-  //   hours: "10:00 - 18:00",
-  //   mapsUrl:"https://maps.app.goo.gl/egjq1XPq9nDjBmgr8",
-  //   city: "Hà Nội",
-  // },
+  {
+    id: 6,
+    name: "Smart City",
+    address:
+      "Shophouse SA1.01.S18 Vinhome Smart City, phường Tây Mỗ, thành phố Hà Nội, Việt Nam.",
+    phone: "0889 866 666",
+    services: ["Tư vấn", "Rửa mặt", "Mỹ phẩm"],
+    lat: 21.00419,
+    lng: 105.736075,
+    hours: "10:00 - 22:00",
+    mapsUrl: "https://maps.app.goo.gl/egjq1XPq9nDjBmgr8",
+    city: "Hà Nội",
+  },
   {
     id: 7,
     name: "Vinhomes SkyLake",
@@ -128,7 +129,7 @@ const branches: Branch[] = [
     lat: 21.0200702,
     lng: 105.7809455,
     hours: "10:00 - 22:00",
-    mapsUrl:"https://maps.app.goo.gl/JemrEzbus2yQtV627",
+    mapsUrl: "https://maps.app.goo.gl/JemrEzbus2yQtV627",
     city: "Hà Nội",
   },
   {
@@ -141,7 +142,7 @@ const branches: Branch[] = [
     lat: 21.0070567,
     lng: 105.8326319,
     hours: "10:00 - 22:00",
-    mapsUrl:"https://maps.app.goo.gl/CVU2MFTFtg9ptK5o7",
+    mapsUrl: "https://maps.app.goo.gl/CVU2MFTFtg9ptK5o7",
     city: "Hà Nội",
   },
   {
@@ -154,7 +155,7 @@ const branches: Branch[] = [
     lat: 21.0523645,
     lng: 105.7926943,
     hours: "10:00 - 22:00",
-    mapsUrl:"https://maps.app.goo.gl/W7JgY594TGUY2kUZ7",
+    mapsUrl: "https://maps.app.goo.gl/W7JgY594TGUY2kUZ7",
     city: "Hà Nội",
   },
   {
@@ -167,20 +168,19 @@ const branches: Branch[] = [
     lat: 21.0013349,
     lng: 105.784505,
     hours: "10:00 - 22:00",
-    mapsUrl:"https://maps.app.goo.gl/P7om5stVSsG6mcVn8",
+    mapsUrl: "https://maps.app.goo.gl/P7om5stVSsG6mcVn8",
     city: "Hà Nội",
   },
   {
     id: 11,
     name: "Hanoi Tower",
-    address:
-      "69 P. Thợ Nhuộm, Cửa Nam, Hoàn Kiếm, Hà Nội 100000, Việt Nam",
+    address: "69 P. Thợ Nhuộm, Cửa Nam, Hoàn Kiếm, Hà Nội 100000, Việt Nam",
     phone: "0889 866 666",
     services: ["Tư vấn", "Rửa mặt", "Mỹ phẩm"],
     lat: 21.0272581,
     lng: 105.8447507,
     hours: "10:00 - 20:00",
-    mapsUrl:"https://maps.app.goo.gl/y7h4xVagDXyD1B3CA",
+    mapsUrl: "https://maps.app.goo.gl/y7h4xVagDXyD1B3CA",
     city: "Hà Nội",
   },
 
@@ -194,7 +194,7 @@ const branches: Branch[] = [
     lat: 20.9915475,
     lng: 105.8681091,
     hours: "10:00 - 20:00",
-    mapsUrl:"https://maps.app.goo.gl/iybgpFXWDZF5rmpr5",
+    mapsUrl: "https://maps.app.goo.gl/iybgpFXWDZF5rmpr5",
     city: "Hà Nội",
   },
 
@@ -205,24 +205,23 @@ const branches: Branch[] = [
       "Tầng 2, Lotte Department Store, Tòa nhà Lotte Center, 54 Liễu Giai, quận Ba Đình, Hà Nội, Việt Nam",
     phone: "0889 866 666",
     services: ["Tư vấn", "Rửa mặt", "Mỹ phẩm"],
-    lat:21.0322341,
+    lat: 21.0322341,
     lng: 105.812058,
     hours: "10:00 - 22:00",
-    mapsUrl:"https://maps.app.goo.gl/YADNRTpq8a5B8KFR9",
+    mapsUrl: "https://maps.app.goo.gl/YADNRTpq8a5B8KFR9",
     city: "Hà Nội",
   },
 
   {
     id: 50,
     name: "Vincom Plaza Bắc Từ Liêm",
-    address:
-      "Gian hàng B1-08, tầng B1, số 234 Phạm Văn Đồng, P. Phú Diễn",
+    address: "Gian hàng B1-08, tầng B1, số 234 Phạm Văn Đồng, P. Phú Diễn",
     phone: "0889 866 666",
     services: ["Tư vấn", "Rửa mặt", "Mỹ phẩm"],
     lat: 21.052851,
     lng: 105.780876,
     hours: "10:00 - 22:00",
-    mapsUrl:"https://maps.app.goo.gl/ocPmwDAyLQgX2FWM9",
+    mapsUrl: "https://maps.app.goo.gl/ocPmwDAyLQgX2FWM9",
     city: "Hà Nội",
   },
 
@@ -237,7 +236,7 @@ const branches: Branch[] = [
     lat: 10.7404475,
     lng: 106.6787347,
     hours: "10:00 - 22:00",
-    mapsUrl:"https://maps.app.goo.gl/HZnLVknQRXRmb6F6A",
+    mapsUrl: "https://maps.app.goo.gl/HZnLVknQRXRmb6F6A",
     city: "Hồ Chí Minh",
   },
   {
@@ -249,7 +248,7 @@ const branches: Branch[] = [
     lat: 10.7948511,
     lng: 106.7220564,
     hours: "10:00 - 22:00",
-    mapsUrl:"https://maps.app.goo.gl/7KeLn2NoeZSXsj2v9",
+    mapsUrl: "https://maps.app.goo.gl/7KeLn2NoeZSXsj2v9",
     city: "Hồ Chí Minh",
   },
   {
@@ -261,7 +260,7 @@ const branches: Branch[] = [
     lat: 10.8023676,
     lng: 106.7408201,
     hours: "10:00 - 22:00",
-    mapsUrl:"https://maps.app.goo.gl/LLywjFSRmieGZMENA",
+    mapsUrl: "https://maps.app.goo.gl/LLywjFSRmieGZMENA",
     city: "Hồ Chí Minh",
   },
   {
@@ -273,7 +272,7 @@ const branches: Branch[] = [
     lat: 10.784934,
     lng: 106.7469457,
     hours: "10:00 - 21:30",
-    mapsUrl:"https://maps.app.goo.gl/vn7AVZAy73gcgxYu7",
+    mapsUrl: "https://maps.app.goo.gl/vn7AVZAy73gcgxYu7",
     city: "Hồ Chí Minh",
   },
   {
@@ -285,7 +284,7 @@ const branches: Branch[] = [
     lat: 10.8271645,
     lng: 106.6892835,
     hours: "10:00 - 22:00",
-    mapsUrl:"https://maps.app.goo.gl/6SJxrJBmvQdLM7Th9",
+    mapsUrl: "https://maps.app.goo.gl/6SJxrJBmvQdLM7Th9",
     city: "Hồ Chí Minh",
   },
   {
@@ -297,7 +296,7 @@ const branches: Branch[] = [
     lat: 10.8295734,
     lng: 106.672515,
     hours: "10:00 - 22:00",
-    mapsUrl:"https://maps.app.goo.gl/GWS8ZLk5MVGNaMAv6",
+    mapsUrl: "https://maps.app.goo.gl/GWS8ZLk5MVGNaMAv6",
     city: "Hồ Chí Minh",
   },
   {
@@ -309,7 +308,7 @@ const branches: Branch[] = [
     lat: 10.8447924,
     lng: 106.7786574,
     hours: "10:00 - 22:00",
-    mapsUrl:"https://maps.app.goo.gl/oSbDUu3XrKTQno8JA",
+    mapsUrl: "https://maps.app.goo.gl/oSbDUu3XrKTQno8JA",
     city: "Hồ Chí Minh",
   },
   {
@@ -321,7 +320,7 @@ const branches: Branch[] = [
     lat: 10.7773998,
     lng: 106.7569195,
     hours: "10:00 - 21:30",
-    mapsUrl:"https://maps.app.goo.gl/Fg15aVvTQ2rF2b2cA",
+    mapsUrl: "https://maps.app.goo.gl/Fg15aVvTQ2rF2b2cA",
     city: "Hồ Chí Minh",
   },
   {
@@ -333,7 +332,7 @@ const branches: Branch[] = [
     lat: 10.7290836,
     lng: 106.7188731,
     hours: "8:00 - 22:00",
-    mapsUrl:"https://maps.app.goo.gl/WmnjULritmo2htiv8",
+    mapsUrl: "https://maps.app.goo.gl/WmnjULritmo2htiv8",
     city: "Hồ Chí Minh",
   },
   {
@@ -345,7 +344,7 @@ const branches: Branch[] = [
     lat: 10.8084579,
     lng: 106.6702581,
     hours: "8:00 - 00:00",
-    mapsUrl:"https://maps.app.goo.gl/xNxKoHw7MLVv3R8w6",
+    mapsUrl: "https://maps.app.goo.gl/xNxKoHw7MLVv3R8w6",
     city: "Hồ Chí Minh",
   },
   {
@@ -357,7 +356,7 @@ const branches: Branch[] = [
     lat: 10.7608262,
     lng: 106.6806679,
     hours: "10:00 - 20:00",
-    mapsUrl:"https://maps.app.goo.gl/vxjbyf4UzY9M6dKM8",
+    mapsUrl: "https://maps.app.goo.gl/vxjbyf4UzY9M6dKM8",
     city: "Hồ Chí Minh",
   },
   {
@@ -369,7 +368,7 @@ const branches: Branch[] = [
     lat: 10.7976356,
     lng: 106.6888018,
     hours: "10:00 - 20:00",
-    mapsUrl:"https://maps.app.goo.gl/PxZRr7FPuhDK1uAJA",
+    mapsUrl: "https://maps.app.goo.gl/PxZRr7FPuhDK1uAJA",
     city: "Hồ Chí Minh",
   },
   {
@@ -381,7 +380,7 @@ const branches: Branch[] = [
     lat: 10.7883849,
     lng: 106.6922183,
     hours: "10:00 - 20:00",
-    mapsUrl:"https://maps.app.goo.gl/M8BLhR6326BP2Hjr6",
+    mapsUrl: "https://maps.app.goo.gl/M8BLhR6326BP2Hjr6",
     city: "Hồ Chí Minh",
   },
   {
@@ -394,7 +393,7 @@ const branches: Branch[] = [
     lat: 10.7766859,
     lng: 106.6912394,
     hours: "10:00 - 20:00",
-    mapsUrl:"https://maps.app.goo.gl/CRx5PhU6oJE9w4tN6",
+    mapsUrl: "https://maps.app.goo.gl/CRx5PhU6oJE9w4tN6",
     city: "Hồ Chí Minh",
   },
   {
@@ -407,7 +406,7 @@ const branches: Branch[] = [
     lat: 10.8016988,
     lng: 106.6175257,
     hours: "10:00 - 22:00",
-    mapsUrl:"https://maps.app.goo.gl/georubcSDgxQgsva9",
+    mapsUrl: "https://maps.app.goo.gl/georubcSDgxQgsva9",
     city: "Hồ Chí Minh",
   },
   {
@@ -420,7 +419,7 @@ const branches: Branch[] = [
     lat: 10.7321115,
     lng: 106.7291998,
     hours: "11:00 - 19:00",
-    mapsUrl:"https://maps.app.goo.gl/R48ge7FN2QmtTpHs6",
+    mapsUrl: "https://maps.app.goo.gl/R48ge7FN2QmtTpHs6",
     city: "Hồ Chí Minh",
   },
   {
@@ -432,7 +431,7 @@ const branches: Branch[] = [
     lat: 10.7235497,
     lng: 106.7269112,
     hours: "11:00 - 19:00",
-    mapsUrl:"https://maps.app.goo.gl/q5juKEWGMxdfFGeq8",
+    mapsUrl: "https://maps.app.goo.gl/q5juKEWGMxdfFGeq8",
     city: "Hồ Chí Minh",
   },
   {
@@ -444,7 +443,7 @@ const branches: Branch[] = [
     lat: 10.7236418,
     lng: 106.6857114,
     hours: "9:30 - 22:00",
-    mapsUrl:"https://maps.app.goo.gl/7v6oXMh3pjBwrp5X8",
+    mapsUrl: "https://maps.app.goo.gl/7v6oXMh3pjBwrp5X8",
     city: "Hồ Chí Minh",
   },
   {
@@ -456,7 +455,7 @@ const branches: Branch[] = [
     lat: 10.7298577,
     lng: 106.7032856,
     hours: "10:00 - 22:00",
-    mapsUrl:"https://maps.app.goo.gl/b9h98LTLkAkDLaKY7",
+    mapsUrl: "https://maps.app.goo.gl/b9h98LTLkAkDLaKY7",
     city: "Hồ Chí Minh",
   },
   {
@@ -469,7 +468,7 @@ const branches: Branch[] = [
     lat: 10.7427958,
     lng: 106.6119311,
     hours: "10:00 - 22:00",
-    mapsUrl:"https://maps.app.goo.gl/vkEivdubPZWXmpbT7",
+    mapsUrl: "https://maps.app.goo.gl/vkEivdubPZWXmpbT7",
     city: "Hồ Chí Minh",
   },
   {
@@ -482,7 +481,7 @@ const branches: Branch[] = [
     lat: 10.7627989,
     lng: 106.6830862,
     hours: "10:00 - 22:00",
-    mapsUrl:"https://maps.app.goo.gl/vh2STThY3uqM3Wz76",
+    mapsUrl: "https://maps.app.goo.gl/vh2STThY3uqM3Wz76",
     city: "Hồ Chí Minh",
   },
   {
@@ -494,7 +493,7 @@ const branches: Branch[] = [
     lat: 10.7731031,
     lng: 106.70105,
     hours: "10:00 - 22:00",
-    mapsUrl:"https://maps.app.goo.gl/dYdUEke64RShb4p7A",
+    mapsUrl: "https://maps.app.goo.gl/dYdUEke64RShb4p7A",
     city: "Hồ Chí Minh",
   },
   {
@@ -506,7 +505,7 @@ const branches: Branch[] = [
     lat: 10.7728936,
     lng: 106.6902668,
     hours: "9:00 - 20:00",
-    mapsUrl:"https://maps.app.goo.gl/fteD9eXMD7Yw2tyA8",
+    mapsUrl: "https://maps.app.goo.gl/fteD9eXMD7Yw2tyA8",
     city: "Hồ Chí Minh",
   },
   {
@@ -518,7 +517,7 @@ const branches: Branch[] = [
     lat: 10.772925,
     lng: 106.6799671,
     hours: "10:00 - 20:00",
-    mapsUrl:"https://maps.app.goo.gl/RuMprWSEBAn7cU468",
+    mapsUrl: "https://maps.app.goo.gl/RuMprWSEBAn7cU468",
     city: "Hồ Chí Minh",
   },
   // {
@@ -542,7 +541,7 @@ const branches: Branch[] = [
     lat: 10.772451,
     lng: 106.6929858,
     hours: "10:00 - 20:00",
-    mapsUrl:"https://maps.app.goo.gl/yzw8ZyEcn2EpsFuT6",
+    mapsUrl: "https://maps.app.goo.gl/yzw8ZyEcn2EpsFuT6",
     city: "Hồ Chí Minh",
   },
   {
@@ -551,10 +550,10 @@ const branches: Branch[] = [
     address: "L4-03, 3C Đường 3/2, P. 10, Quận 10",
     phone: "0889 866 666",
     services: ["Tư vấn", "Rửa mặt", "Mỹ phẩm"],
-    lat: 10.776232022897757, 
+    lat: 10.776232022897757,
     lng: 106.68076025201948,
     hours: "10:00 - 22:00",
-    mapsUrl:"https://maps.app.goo.gl/GcNZpsHHxYMF1jMK9",
+    mapsUrl: "https://maps.app.goo.gl/GcNZpsHHxYMF1jMK9",
     city: "Hồ Chí Minh",
   },
   {
@@ -567,7 +566,7 @@ const branches: Branch[] = [
     lat: 10.7822582,
     lng: 106.7076248,
     hours: "10:00 - 22:00",
-    mapsUrl:"https://maps.app.goo.gl/xYYxEMFrfPwygZBa9",
+    mapsUrl: "https://maps.app.goo.gl/xYYxEMFrfPwygZBa9",
     city: "Hồ Chí Minh",
   },
   {
@@ -576,23 +575,24 @@ const branches: Branch[] = [
     address: "275 Võ Nguyên Giáp, An Phú, Thủ Đức, Hồ Chí Minh 700000",
     phone: "0889 866 666",
     services: ["Tư vấn", "Rửa mặt", "Mỹ phẩm"],
-    lat: 10.803567840971569, 
+    lat: 10.803567840971569,
     lng: 106.74829528342579,
     hours: "10:00 - 22:00",
-    mapsUrl:"https://maps.app.goo.gl/ugyLLkkxpzH5NSVDA",
+    mapsUrl: "https://maps.app.goo.gl/ugyLLkkxpzH5NSVDA",
     city: "Hồ Chí Minh",
   },
 
   {
     id: 45,
     name: "Đảo Kim Cương",
-    address: "Shophouse B2.1G, Tháp 3 (Brilliant), Dự án Đảo Kim Cương, Số 01 Trần Quý Kiên, Phường Bình Trưng",
+    address:
+      "Shophouse B2.1G, Tháp 3 (Brilliant), Dự án Đảo Kim Cương, Số 01 Trần Quý Kiên, Phường Bình Trưng",
     phone: "0889 866 666",
     services: ["Tư vấn", "Rửa mặt", "Mỹ phẩm"],
-    lat: 10.77830991149819, 
+    lat: 10.77830991149819,
     lng: 106.74597857130746,
     hours: "9:30 - 21:30",
-    mapsUrl:"https://maps.app.goo.gl/3Ww3UPTfdpGNhcb37",
+    mapsUrl: "https://maps.app.goo.gl/3Ww3UPTfdpGNhcb37",
     city: "Hồ Chí Minh",
   },
 
@@ -602,26 +602,26 @@ const branches: Branch[] = [
     address: "188 Đ. Nguyễn Xí, Phường 26, Bình Thạnh, Hồ Chí Minh, Việt Nam",
     phone: "0889 866 666",
     services: ["Tư vấn", "Rửa mặt", "Mỹ phẩm"],
-    lat: 10.816578670035579, 
+    lat: 10.816578670035579,
     lng: 106.70685500824277,
     hours: "10:00 - 22:00",
-    mapsUrl:"https://maps.app.goo.gl/CMhzzX5Zckck1cZv8",
+    mapsUrl: "https://maps.app.goo.gl/CMhzzX5Zckck1cZv8",
     city: "Hồ Chí Minh",
   },
 
   {
     id: 47,
     name: "Saigon Pearl",
-    address: "92 Nguyễn Hữu Cảnh, Saigon Pearl, Bình Thạnh, Hồ Chí Minh 700000, Việt Nam",
+    address:
+      "92 Nguyễn Hữu Cảnh, Saigon Pearl, Bình Thạnh, Hồ Chí Minh 700000, Việt Nam",
     phone: "0889 866 666",
     services: ["Tư vấn", "Rửa mặt", "Mỹ phẩm"],
     lat: 10.7904901,
     lng: 106.7192558,
     hours: "10:00 - 20:00",
-    mapsUrl:"https://maps.app.goo.gl/68gi7urTBKUB53az7",
+    mapsUrl: "https://maps.app.goo.gl/68gi7urTBKUB53az7",
     city: "Hồ Chí Minh",
   },
-
 
   // Đà Nẵng - 1 Chi Nhánh
   {
@@ -633,11 +633,10 @@ const branches: Branch[] = [
     lat: 16.066422,
     lng: 108.2238567,
     hours: "10:00 - 20:00",
-    mapsUrl:"https://maps.app.goo.gl/84J2RgRcNHz4cMyu6",
+    mapsUrl: "https://maps.app.goo.gl/84J2RgRcNHz4cMyu6",
     city: "Đà Nẵng",
   },
 
-  
   // Vũng Tàu - 2 Chi Nhánh
   {
     id: 42,
@@ -648,11 +647,10 @@ const branches: Branch[] = [
     lat: 10.3455038,
     lng: 107.0769746,
     hours: "10:00 - 20:00",
-    mapsUrl:"https://maps.app.goo.gl/yEabGLXEpX1bfSPaA",
+    mapsUrl: "https://maps.app.goo.gl/yEabGLXEpX1bfSPaA",
     city: "Vũng Tàu",
   },
 
-  
   // {
   //   id: 43,
   //   name: "Hạ Long - Vũng Tàu",
@@ -677,7 +675,7 @@ const branches: Branch[] = [
     lat: 12.2481451,
     lng: 109.1948614,
     hours: "10:00 - 22:00",
-    mapsUrl:"https://maps.app.goo.gl/NSYt6o2ZTYnJWrnD7",
+    mapsUrl: "https://maps.app.goo.gl/NSYt6o2ZTYnJWrnD7",
     city: "Nha Trang",
   },
 ];
@@ -714,28 +712,33 @@ export default function BranchMap() {
   const [mapError, setMapError] = useState<string | null>(null);
   const [isLoadingLocation, setIsLoadingLocation] = useState(false);
   const [hasRequestedLocation, setHasRequestedLocation] = useState(false);
-  const [userLocation, setUserLocation] = useState<{ lat: number; lng: number } | null>(null);
+  const [userLocation, setUserLocation] = useState<{
+    lat: number;
+    lng: number;
+  } | null>(null);
 
   // Generate branch slug from name for URL hash
   const generateBranchSlug = (branchName: string) => {
     return branchName
       .toLowerCase()
-      .replace(/đ/g, 'd') // Replace đ with d
-      .replace(/Đ/g, 'd') // Replace Đ with d
-      .normalize('NFD') // Normalize Vietnamese characters
-      .replace(/[\u0300-\u036f]/g, '') // Remove diacritics
-      .replace(/[^a-z0-9\s-]/g, '') // Remove special characters
-      .replace(/\s+/g, '-') // Replace spaces with hyphens
-      .replace(/-+/g, '-') // Replace multiple hyphens with single
+      .replace(/đ/g, "d") // Replace đ with d
+      .replace(/Đ/g, "d") // Replace Đ with d
+      .normalize("NFD") // Normalize Vietnamese characters
+      .replace(/[\u0300-\u036f]/g, "") // Remove diacritics
+      .replace(/[^a-z0-9\s-]/g, "") // Remove special characters
+      .replace(/\s+/g, "-") // Replace spaces with hyphens
+      .replace(/-+/g, "-") // Replace multiple hyphens with single
       .trim();
   };
 
   // Handle URL hash to auto-open booking for specific branch
   useEffect(() => {
     const handleHashChange = () => {
-      const hash = window.location.hash.replace('#', '');
+      const hash = window.location.hash.replace("#", "");
       if (hash) {
-        const branch = branches.find(b => generateBranchSlug(b.name) === hash);
+        const branch = branches.find(
+          (b) => generateBranchSlug(b.name) === hash
+        );
         if (branch) {
           setSelectedBranch(branch);
           setShowBookingForm(true);
@@ -747,8 +750,8 @@ export default function BranchMap() {
     handleHashChange();
 
     // Listen for hash changes
-    window.addEventListener('hashchange', handleHashChange);
-    return () => window.removeEventListener('hashchange', handleHashChange);
+    window.addEventListener("hashchange", handleHashChange);
+    return () => window.removeEventListener("hashchange", handleHashChange);
   }, []);
 
   const initializeMap = useCallback(async () => {
@@ -798,7 +801,7 @@ export default function BranchMap() {
       });
 
       // Move zoom controls to top-right to avoid sidebar overlap
-      map.zoomControl.setPosition('topright');
+      map.zoomControl.setPosition("topright");
 
       const addBaseLayer = () => {
         try {
@@ -1076,7 +1079,7 @@ export default function BranchMap() {
     const currentMapRef = mapRef.current;
     initializeMap();
     (
-      window as unknown as { 
+      window as unknown as {
         openBooking: (branchId: number) => void;
         openDirections: (branchId: number) => void;
       }
@@ -1091,7 +1094,7 @@ export default function BranchMap() {
     };
 
     (
-      window as unknown as { 
+      window as unknown as {
         openBooking: (branchId: number) => void;
         openDirections: (branchId: number) => void;
       }
@@ -1111,16 +1114,16 @@ export default function BranchMap() {
         setShowSidebar(false);
       }
     };
-    
+
     checkMobile();
 
     // Add resize listener
     const handleResize = () => {
       const wasMobile = isMobile;
       const isNowMobile = window.innerWidth < 768;
-      
+
       setIsMobile(isNowMobile);
-      
+
       // If switching from mobile to desktop, show sidebar
       if (wasMobile && !isNowMobile) {
         setShowSidebar(true);
@@ -1129,7 +1132,7 @@ export default function BranchMap() {
       else if (!wasMobile && isNowMobile) {
         setShowSidebar(false);
       }
-      
+
       if (mapInstanceRef.current) {
         mapInstanceRef.current.map.invalidateSize();
       }
@@ -1195,29 +1198,28 @@ export default function BranchMap() {
 
   const getMyLocation = () => {
     const buildPermissionHelp = () => {
-      const ua = (typeof navigator !== "undefined" ? navigator.userAgent : "").toLowerCase();
+      const ua = (
+        typeof navigator !== "undefined" ? navigator.userAgent : ""
+      ).toLowerCase();
       const isIOS = /iphone|ipad|ipod/.test(ua);
       const isAndroid = /android/.test(ua);
-      const isSafariIOS = isIOS && /safari/.test(ua) && !/crios|fxios|edgios/.test(ua);
+      const isSafariIOS =
+        isIOS && /safari/.test(ua) && !/crios|fxios|edgios/.test(ua);
       const isChromeAndroid = isAndroid && /chrome/.test(ua);
 
       if (isSafariIOS) {
-        return (
-          "Bạn đang tắt quyền vị trí cho trang này.\n\nHướng dẫn iPhone (Safari):\n1) Mở Cài đặt > Safari > Vị trí (Location)\n2) Chọn Hỏi (Ask) hoặc Luôn cho phép (Allow)\n3) Quay lại trình duyệt và thử lại."
-        );
+        return "Bạn đang tắt quyền vị trí cho trang này.\n\nHướng dẫn iPhone (Safari):\n1) Mở Cài đặt > Safari > Vị trí (Location)\n2) Chọn Hỏi (Ask) hoặc Luôn cho phép (Allow)\n3) Quay lại trình duyệt và thử lại.";
       }
       if (isChromeAndroid) {
-        return (
-          "Bạn đang tắt quyền vị trí cho trang này.\n\nHướng dẫn Android (Chrome):\n1) Mở Chrome > Settings > Site settings > Location\n2) Bật Location và Cho phép domain này\n3) Tải lại trang và thử lại."
-        );
+        return "Bạn đang tắt quyền vị trí cho trang này.\n\nHướng dẫn Android (Chrome):\n1) Mở Chrome > Settings > Site settings > Location\n2) Bật Location và Cho phép domain này\n3) Tải lại trang và thử lại.";
       }
-      return (
-        "Bạn đang tắt quyền vị trí cho trang này.\nVui lòng bật quyền Vị trí cho trình duyệt rồi thử lại."
-      );
+      return "Bạn đang tắt quyền vị trí cho trang này.\nVui lòng bật quyền Vị trí cho trình duyệt rồi thử lại.";
     };
 
     if (!window.isSecureContext) {
-      alert("Trình duyệt yêu cầu HTTPS để dùng định vị. Vui lòng truy cập qua https://");
+      alert(
+        "Trình duyệt yêu cầu HTTPS để dùng định vị. Vui lòng truy cập qua https://"
+      );
       return;
     }
 
@@ -1230,12 +1232,17 @@ export default function BranchMap() {
       const permission = (navigator as any).permissions?.query
         ? (navigator as any).permissions.query({ name: "geolocation" })
         : null;
-      if (permission && typeof (permission as Promise<any>).then === "function") {
-        (permission as Promise<any>).then((status: { state?: string }) => {
-          if (status?.state === "denied") {
-            alert(buildPermissionHelp());
-          }
-        }).catch(() => {});
+      if (
+        permission &&
+        typeof (permission as Promise<any>).then === "function"
+      ) {
+        (permission as Promise<any>)
+          .then((status: { state?: string }) => {
+            if (status?.state === "denied") {
+              alert(buildPermissionHelp());
+            }
+          })
+          .catch(() => {});
       }
     } catch {}
 
@@ -1444,7 +1451,8 @@ export default function BranchMap() {
           color: "#f97316",
           weight: 4,
           opacity: 0.95,
-          dashArray: routeCoordinates && routeCoordinates.length > 1 ? undefined : "8 8",
+          dashArray:
+            routeCoordinates && routeCoordinates.length > 1 ? undefined : "8 8",
         }).addTo(layerGroup);
 
         map.fitBounds(polyline.getBounds(), {
@@ -1494,9 +1502,15 @@ export default function BranchMap() {
             </Button>
             <div className="block rounded-full bg-white/90 text-orange-600 px-2 py-0.5 shadow-md border border-orange-200/50 marquee hint-shimmer pointer-events-none max-w-[150px] sm:max-w-[220px] text-[11px]">
               <div className="marquee__track">
-                <span className="marquee__item hint-glow">Bấm vào để xem tất cả chi nhánh</span>
-                <span className="marquee__item hint-glow">Bấm vào để xem tất cả chi nhánh</span>
-                <span className="marquee__item hint-glow">Bấm vào để xem tất cả chi nhánh</span>
+                <span className="marquee__item hint-glow">
+                  Bấm vào để xem tất cả chi nhánh
+                </span>
+                <span className="marquee__item hint-glow">
+                  Bấm vào để xem tất cả chi nhánh
+                </span>
+                <span className="marquee__item hint-glow">
+                  Bấm vào để xem tất cả chi nhánh
+                </span>
               </div>
             </div>
           </div>
@@ -1504,7 +1518,13 @@ export default function BranchMap() {
 
         <div
           className={`absolute top-2 md:top-4 ${
-            showSidebar ? (isMobile ? "left-2" : "left-2 md:left-4") : (isMobile ? "left-2" : "left-10 md:left-16")
+            showSidebar
+              ? isMobile
+                ? "left-2"
+                : "left-2 md:left-4"
+              : isMobile
+              ? "left-2"
+              : "left-10 md:left-16"
           } right-2 md:right-4 z-[1000] flex gap-2`}
         ></div>
 
@@ -1717,7 +1737,9 @@ export default function BranchMap() {
                     setShowBookingForm(true);
                     // Set URL hash for shareable link
                     if (selectedBranch) {
-                      window.location.hash = generateBranchSlug(selectedBranch.name);
+                      window.location.hash = generateBranchSlug(
+                        selectedBranch.name
+                      );
                     }
                   }}
                 >
@@ -1757,7 +1779,7 @@ export default function BranchMap() {
           onClick={() => {
             setShowBookingForm(false);
             // Clear URL hash when closing booking form
-            window.location.hash = '';
+            window.location.hash = "";
           }}
         >
           <div className="fixed inset-0 bg-black/80" />
@@ -1780,14 +1802,14 @@ export default function BranchMap() {
               onClose={() => {
                 setShowBookingForm(false);
                 // Clear URL hash when closing booking form
-                window.location.hash = '';
+                window.location.hash = "";
               }}
             />
             <button
               onClick={() => {
                 setShowBookingForm(false);
                 // Clear URL hash when closing booking form
-                window.location.hash = '';
+                window.location.hash = "";
               }}
               className="absolute right-4 top-4 rounded-sm opacity-70 transition-opacity hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-offset-2"
             >
@@ -1822,23 +1844,55 @@ function BookingForm({
     try {
       // Parse giờ hoạt động từ format "10:00 - 22:00"
       const match = hours.match(/(\d{1,2}):(\d{2})\s*-\s*(\d{1,2}):(\d{2})/);
-      if (!match) return ["09:30", "10:00", "10:30", "11:00", "11:30", "12:00", "12:30", "13:00", "13:30", "14:00", "14:30", "15:00", "15:30", "16:00", "16:30", "17:00", "17:30", "18:00", "18:30", "19:00", "19:30", "20:00", "20:30", "21:00", "21:30"];
-      
+      if (!match)
+        return [
+          "09:30",
+          "10:00",
+          "10:30",
+          "11:00",
+          "11:30",
+          "12:00",
+          "12:30",
+          "13:00",
+          "13:30",
+          "14:00",
+          "14:30",
+          "15:00",
+          "15:30",
+          "16:00",
+          "16:30",
+          "17:00",
+          "17:30",
+          "18:00",
+          "18:30",
+          "19:00",
+          "19:30",
+          "20:00",
+          "20:30",
+          "21:00",
+          "21:30",
+        ];
+
       const startHour = parseInt(match[1]);
       const startMin = parseInt(match[2]);
       const endHour = parseInt(match[3]);
       const endMin = parseInt(match[4]);
-      
+
       const slots: string[] = [];
-      
+
       // Tạo slots từ giờ bắt đầu đến giờ kết thúc (mỗi 30 phút)
       let currentHour = startHour;
       let currentMin = startMin;
-      
-      while (currentHour < endHour || (currentHour === endHour && currentMin <= endMin)) {
-        const timeStr = `${currentHour.toString().padStart(2, '0')}:${currentMin.toString().padStart(2, '0')}`;
+
+      while (
+        currentHour < endHour ||
+        (currentHour === endHour && currentMin <= endMin)
+      ) {
+        const timeStr = `${currentHour.toString().padStart(2, "0")}:${currentMin
+          .toString()
+          .padStart(2, "0")}`;
         slots.push(timeStr);
-        
+
         // Tăng 30 phút
         currentMin += 30;
         if (currentMin >= 60) {
@@ -1846,23 +1900,71 @@ function BookingForm({
           currentHour++;
         }
       }
-      
-      return slots.length > 0 ? slots : ["09:30", "10:00", "10:30", "11:00", "11:30", "12:00", "12:30", "13:00", "13:30", "14:00", "14:30", "15:00", "15:30", "16:00", "16:30", "17:00", "17:30", "18:00", "18:30", "19:00", "19:30", "20:00", "20:30", "21:00", "21:30"];
+
+      return slots.length > 0
+        ? slots
+        : [
+            "09:30",
+            "10:00",
+            "10:30",
+            "11:00",
+            "11:30",
+            "12:00",
+            "12:30",
+            "13:00",
+            "13:30",
+            "14:00",
+            "14:30",
+            "15:00",
+            "15:30",
+            "16:00",
+            "16:30",
+            "17:00",
+            "17:30",
+            "18:00",
+            "18:30",
+            "19:00",
+            "19:30",
+            "20:00",
+            "20:30",
+            "21:00",
+            "21:30",
+          ];
     } catch (error) {
       console.error("Error parsing branch hours:", error);
-      return ["09:30", "10:00", "10:30", "11:00", "11:30", "12:00", "12:30", "13:00", "13:30", "14:00", "14:30", "15:00", "15:30", "16:00", "16:30", "17:00", "17:30", "18:00", "18:30", "19:00", "19:30", "20:00", "20:30", "21:00", "21:30"];
+      return [
+        "09:30",
+        "10:00",
+        "10:30",
+        "11:00",
+        "11:30",
+        "12:00",
+        "12:30",
+        "13:00",
+        "13:30",
+        "14:00",
+        "14:30",
+        "15:00",
+        "15:30",
+        "16:00",
+        "16:30",
+        "17:00",
+        "17:30",
+        "18:00",
+        "18:30",
+        "19:00",
+        "19:30",
+        "20:00",
+        "20:30",
+        "21:00",
+        "21:30",
+      ];
     }
   };
 
   const timeSlots = generateTimeSlots(branch.hours);
 
-  const numberCustomer = [
-    "1",
-    "2",
-    "3",
-    "4",
-    "5"
-  ];
+  const numberCustomer = ["1", "2", "3", "4", "5"];
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -1870,21 +1972,21 @@ function BookingForm({
 
     try {
       // Gửi email xác nhận đặt lịch
-      const emailResponse = await fetch('/api/booking/confirm', {
-        method: 'POST',
+      const emailResponse = await fetch("/api/booking/confirm", {
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
         body: JSON.stringify({
           customerName,
           customerEmail: customerEmail || undefined,
           customerPhone,
-          service: selectedService || 'Dịch vụ chăm sóc da',
+          service: selectedService || "Dịch vụ chăm sóc da",
           branchName: branch.name,
-          branchAddress: branch.address || 'Chưa cung cấp',
+          branchAddress: branch.address || "Chưa cung cấp",
           bookingDate: selectedDate,
           bookingTime: selectedTime,
-          bookingCustomer: selectedCustomer
+          bookingCustomer: selectedCustomer,
         }),
       });
 
@@ -1893,7 +1995,7 @@ function BookingForm({
       if (emailResult.success) {
         // const customerSuccess = emailResult.emailDetails?.customer?.success;
         // const businessSuccess = emailResult.emailDetails?.business?.success;
-        
+
         // Email status logic removed as it's not used
 
         alert(
@@ -1905,9 +2007,11 @@ function BookingForm({
         );
       }
     } catch (error) {
-      console.error('❌ Booking error:', error);
+      console.error("❌ Booking error:", error);
       alert(
-        `✅ Đặt lịch thành công!\n\n⚠️ Lỗi gửi email: ${error instanceof Error ? error.message : 'Unknown error'}\n`
+        `✅ Đặt lịch thành công!\n\n⚠️ Lỗi gửi email: ${
+          error instanceof Error ? error.message : "Unknown error"
+        }\n`
       );
     }
 
@@ -1929,7 +2033,9 @@ function BookingForm({
   return (
     <form onSubmit={handleSubmit} className="space-y-3 md:space-y-4">
       <div>
-        <label className="text-xs md:text-sm font-medium mb-1 md:mb-2 block">Họ và tên</label>
+        <label className="text-xs md:text-sm font-medium mb-1 md:mb-2 block">
+          Họ và tên
+        </label>
         <Input
           value={customerName}
           onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
@@ -1942,7 +2048,9 @@ function BookingForm({
       </div>
 
       <div>
-        <label className="text-xs md:text-sm font-medium mb-1 md:mb-2 block">Số điện thoại</label>
+        <label className="text-xs md:text-sm font-medium mb-1 md:mb-2 block">
+          Số điện thoại
+        </label>
         <Input
           value={customerPhone}
           onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
@@ -1955,7 +2063,9 @@ function BookingForm({
       </div>
 
       <div>
-        <label className="text-xs md:text-sm font-medium mb-1 md:mb-2 block">Email (tùy chọn)</label>
+        <label className="text-xs md:text-sm font-medium mb-1 md:mb-2 block">
+          Email (tùy chọn)
+        </label>
         <Input
           type="email"
           value={customerEmail}
@@ -1971,7 +2081,9 @@ function BookingForm({
       </div>
 
       <div>
-        <label className="text-xs md:text-sm font-medium mb-1 md:mb-2 block">Ngày hẹn</label>
+        <label className="text-xs md:text-sm font-medium mb-1 md:mb-2 block">
+          Ngày hẹn
+        </label>
         <Input
           type="date"
           value={selectedDate}
@@ -2009,7 +2121,9 @@ function BookingForm({
       </div>
 
       <div>
-        <label className="text-xs md:text-sm font-medium mb-1 md:mb-2 block">Số khách</label>
+        <label className="text-xs md:text-sm font-medium mb-1 md:mb-2 block">
+          Số khách
+        </label>
         <select
           value={selectedCustomer}
           onChange={(e) => setSelectedCustomer(e.target.value)}
