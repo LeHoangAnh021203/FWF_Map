@@ -1999,19 +1999,19 @@ function BookingForm({
         // Email status logic removed as it's not used
 
         alert(
-          `🎉 Xác nhận lịch thành công!\nNhà Cáo sẽ liên hệ để hỗ trợ khách iu trong thời gian sớm nhất!!! `
+          "✅ Đặt lịch đã được ghi nhận, quý khách vui lòng chờ xác nhận qua cuộc gọi của Face Wash Fox.\n\nLiên hệ ngay với chúng tôi để được giải đáp hoặc đặt lịch qua Hotline 08898 66666"
         );
       } else {
         alert(
-          `✅ Đặt lịch thành công!\n\n⚠️ Không thể gửi email xác nhận: ${emailResult.error}\n`
+          `❌ Đặt lịch thất bại!\n\n⚠️ Không thể gửi email xác nhận: ${emailResult.error}\n\nLiên hệ ngay với chúng tôi để được giải đáp hoặc đặt lịch qua Hotline 08898 66666`
         );
       }
     } catch (error) {
       console.error("❌ Booking error:", error);
       alert(
-        `✅ Đặt lịch thành công!\n\n⚠️ Lỗi gửi email: ${
+        `❌ Đặt lịch thất bại!\n\n⚠️ Lỗi gửi email: ${
           error instanceof Error ? error.message : "Unknown error"
-        }\n`
+        }\n\nLiên hệ ngay với chúng tôi để được giải đáp hoặc đặt lịch qua Hotline 08898 66666`
       );
     }
 
