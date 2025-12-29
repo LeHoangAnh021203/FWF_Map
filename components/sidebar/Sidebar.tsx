@@ -165,6 +165,7 @@ const Sidebar: React.FC<SidebarProps> = ({
   const [selectedVehicle, setSelectedVehicle] = useState<string>("car");
   const [originCoords, setOriginCoords] = useState<{ lat: number; lng: number; label?: string } | null>(null);
   const [mobileSheetState, setMobileSheetState] = useState<"collapsed" | "mid" | "expanded">("mid");
+  const [isDirectionsOpen, setIsDirectionsOpen] = useState(!isMobile);
 
   const vietmapApiKey = process.env.NEXT_PUBLIC_VIETMAP_API_KEY;
 
@@ -568,6 +569,10 @@ const Sidebar: React.FC<SidebarProps> = ({
       setMobileSheetState("mid");
     }
   }, [isMobile, showSidebar]);
+
+  useEffect(() => {
+    setIsDirectionsOpen(!isMobile);
+  }, [isMobile]);
   const handleDragStart = (event: React.TouchEvent | React.MouseEvent) => {
     if (!isMobile) return;
     const clientY = "touches" in event ? event.touches[0].clientY : (event as React.MouseEvent).clientY;
@@ -713,157 +718,178 @@ const Sidebar: React.FC<SidebarProps> = ({
             </div>
           </div>
 
-          <div className={`${isMobile ? "px-4 py-4 border-b space-y-4" : "p-3 md:p-4 border-b space-y-3"}`}>
+          <div className={`${isMobile ? "px-4 py-4 border-b" : "p-3 md:p-4 border-b"}`}>
             <div className="flex items-center justify-between">
               <div className="text-xs md:text-sm font-semibold text-gray-700">Chỉ đường Face Wash Fox</div>
-              <button
-                type="button"
-                onClick={swapDirectionPoints}
-                disabled={!canSwapDirections}
-                className="rounded-full border border-gray-200 p-1.5 text-gray-500 hover:bg-gray-100 disabled:opacity-40"
-                title="Đổi vị trí"
-              >
-                ⇅
-              </button>
-            </div>
-
-            <div className="flex items-center justify-between gap-1 bg-gray-50 rounded-full px-2 py-1">
-              {vehicleOptions.map((vehicle) => (
+              <div className="flex items-center gap-2">
                 <button
-                  key={vehicle.value}
-                  onClick={() => setSelectedVehicle(vehicle.value)}
-                  className={`flex-1 text-xs md:text-sm py-1 rounded-full transition flex items-center justify-center gap-1 ${
-                    selectedVehicle === vehicle.value ? "bg-white shadow text-orange-700" : "text-gray-500 hover:text-orange-500"
-                  }`}
+                  type="button"
+                  onClick={swapDirectionPoints}
+                  disabled={!canSwapDirections}
+                  className="rounded-full border border-gray-200 p-1.5 text-gray-500 hover:bg-gray-100 disabled:opacity-40"
+                  title="Đổi vị trí"
                 >
-                  <vehicle.icon className="h-3.5 w-3.5" aria-hidden="true" />
-                  <span>{vehicle.label}</span>
+                  ⇅
                 </button>
-              ))}
+                <button
+                  type="button"
+                  onClick={() => setIsDirectionsOpen((prev) => !prev)}
+                  className="rounded-full border border-gray-200 p-1.5 text-gray-500 hover:bg-gray-100"
+                  title={isDirectionsOpen ? "Thu gọn" : "Mở rộng"}
+                >
+                  {isDirectionsOpen ? <ChevronUp className="h-4 w-4" /> : <ChevronDown className="h-4 w-4" />}
+                </button>
+              </div>
             </div>
 
-            <div className="space-y-3">
-              <div className="bg-gray-50 rounded-2xl p-3 space-y-2 shadow-inner border border-gray-100">
-                <div className="flex items-center gap-2">
-                  <div className="w-3 h-3 rounded-full border border-gray-400"></div>
-                  <select
-                    value={directionOriginMode}
-                    onChange={(e) => {
-                      const mode = e.target.value as "my-location" | "branch" | "custom";
-                      setDirectionOriginMode(mode);
-                      if (mode !== "branch") setDirectionOriginBranchId("");
-                      if (mode !== "custom") setCustomOriginError(null);
-                    }}
-                    className="flex-1 bg-white rounded-xl border border-gray-200 px-3 py-2 text-xs md:text-sm focus:outline-none focus:ring-2 focus:ring-orange-500"
+            {isDirectionsOpen && (
+              <div className={`${isMobile ? "space-y-4 pt-3" : "space-y-3 pt-2"}`}>
+                <div className="flex items-center justify-between gap-1 bg-gray-50 rounded-full px-2 py-1">
+                  {vehicleOptions.map((vehicle) => (
+                    <button
+                      key={vehicle.value}
+                      onClick={() => setSelectedVehicle(vehicle.value)}
+                      className={`flex-1 text-xs md:text-sm py-1 rounded-full transition flex items-center justify-center gap-1 ${
+                        selectedVehicle === vehicle.value ? "bg-white shadow text-orange-700" : "text-gray-500 hover:text-orange-500"
+                      }`}
+                    >
+                      <vehicle.icon className="h-3.5 w-3.5" aria-hidden="true" />
+                      <span>{vehicle.label}</span>
+                    </button>
+                  ))}
+                </div>
+
+                <div className="space-y-3">
+                  <div className="bg-gray-50 rounded-2xl p-3 space-y-2 shadow-inner border border-gray-100">
+                    <div className="flex items-center gap-2">
+                      <div className="w-3 h-3 rounded-full border border-gray-400"></div>
+                      <select
+                        value={directionOriginMode}
+                        onChange={(e) => {
+                          const mode = e.target.value as "my-location" | "branch" | "custom";
+                          setDirectionOriginMode(mode);
+                          if (mode !== "branch") setDirectionOriginBranchId("");
+                          if (mode !== "custom") setCustomOriginError(null);
+                        }}
+                        className="flex-1 bg-white rounded-xl border border-gray-200 px-3 py-2 text-xs md:text-sm focus:outline-none focus:ring-2 focus:ring-orange-500"
+                      >
+                        <option value="my-location">Vị trí của tôi {userLocation ? "(đã cập nhật)" : "(chưa bật)"}</option>
+                        <option value="branch">Chọn từ chi nhánh</option>
+                        <option value="custom">Tự nhập vị trí</option>
+                      </select>
+                    </div>
+
+                    {directionOriginMode === "branch" && (
+                      <div className="ml-5">
+                        <select
+                          value={directionOriginBranchId}
+                          onChange={(e) => setDirectionOriginBranchId(e.target.value)}
+                          className="w-full bg-white rounded-xl border border-gray-200 px-3 py-2 text-xs md:text-sm focus:outline-none focus:ring-2 focus:ring-orange-500"
+                        >
+                          <option value="">Chọn chi nhánh bắt đầu</option>
+                          {branchOptions.map((branch) => (
+                            <option key={branch.id} value={branch.id}>
+                              {branch.city} - {branch.name}
+                            </option>
+                          ))}
+                        </select>
+                      </div>
+                    )}
+
+                    {directionOriginMode === "custom" && (
+                      <div className="ml-5 space-y-1">
+                        <Input
+                          value={directionOriginCustom}
+                          placeholder="Ví dụ: 123 Trần Duy Hưng, Hà Nội"
+                          onChange={(e) => {
+                            setDirectionOriginCustom(e.target.value);
+                            if (customOriginError) setCustomOriginError(null);
+                          }}
+                          className="text-xs md:text-sm h-9 rounded-xl border-gray-200"
+                        />
+                        <p className="text-[11px] text-gray-500">Mô tả địa chỉ hoặc tên địa điểm cụ thể để chúng tôi tìm kiếm.</p>
+                        {customOriginError && <p className="text-[11px] text-red-500">{customOriginError}</p>}
+                      </div>
+                    )}
+
+                    {directionOriginMode === "my-location" && (
+                      <div className="ml-5 flex items-center justify-between text-[11px] text-gray-500 gap-2">
+                        <span>
+                          {userLocation
+                            ? `Đã cập nhật: ${userLocation.lat.toFixed(4)}, ${userLocation.lng.toFixed(4)}`
+                            : "Chưa truy cập được vị trí của bạn"}
+                        </span>
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          onClick={requestUserLocation}
+                          disabled={isLoadingLocation}
+                          className="h-7 px-2 text-xs"
+                        >
+                          {isLoadingLocation ? "Đang lấy..." : "Lấy vị trí"}
+                        </Button>
+                      </div>
+                    )}
+                  </div>
+
+                  <div className="bg-gray-50 rounded-2xl p-3 shadow-inner border border-gray-100">
+                    <div className="flex items-center gap-2">
+                      <div className="w-3 h-3 rounded-full border border-gray-400 bg-orange-500"></div>
+                      <div className="relative flex-1">
+                        <select
+                          value={directionToId}
+                          onChange={(e) => setDirectionToId(e.target.value)}
+                          className="w-full appearance-none bg-white rounded-xl border border-gray-200 px-3 py-2 pr-7 text-xs md:text-sm focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent transition"
+                        >
+                          <option value="">Chọn điểm đến</option>
+                          {branchesWithDistance.map((branch) => (
+                            <option key={branch.id} value={branch.id}>
+                              {branch.city} - {branch.name}
+                              {distanceLabelMap.get(branch.id) ? ` (${distanceLabelMap.get(branch.id)})` : ""}
+                            </option>
+                          ))}
+                        </select>
+                        <span className="pointer-events-none absolute right-2 top-1/2 -translate-y-1/2 text-gray-400">▾</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="flex flex-col gap-2">
+                  <Button
+                    size="sm"
+                    disabled={isDirectionsButtonDisabled || isRouteLoading}
+                    onClick={handleShowRouteOnMap}
+                    className="w-full text-xs md:text-sm bg-orange-500 hover:bg-orange-400 text-white disabled:opacity-50"
                   >
-                    <option value="my-location">Vị trí của tôi {userLocation ? "(đã cập nhật)" : "(chưa bật)"}</option>
-                    <option value="branch">Chọn từ chi nhánh</option>
-                    <option value="custom">Tự nhập vị trí</option>
-                  </select>
+                    {isRouteLoading ? "Đang tính..." : "Chỉ đường"}
+                  </Button>
                 </div>
 
-                {directionOriginMode === "branch" && (
-                  <div className="ml-5">
-                    <select
-                      value={directionOriginBranchId}
-                      onChange={(e) => setDirectionOriginBranchId(e.target.value)}
-                      className="w-full bg-white rounded-xl border border-gray-200 px-3 py-2 text-xs md:text-sm focus:outline-none focus:ring-2 focus:ring-orange-500"
-                    >
-                      <option value="">Chọn chi nhánh bắt đầu</option>
-                      {branchOptions.map((branch) => (
-                        <option key={branch.id} value={branch.id}>
-                          {branch.city} - {branch.name}
-                        </option>
-                      ))}
-                    </select>
+                {routeSummary && (distanceLabel || durationLabel) && (
+                  <div className="text-[11px] text-blue-800 bg-blue-50 border border-blue-100 rounded-md px-3 py-2">
+                    {distanceLabel && <p>Quãng đường: {distanceLabel}</p>}
+                    {durationLabel && <p>Thời gian dự kiến: {durationLabel}</p>}
                   </div>
                 )}
 
-                {directionOriginMode === "custom" && (
-                  <div className="ml-5 space-y-1">
-                    <Input
-                      value={directionOriginCustom}
-                      placeholder="Ví dụ: 123 Trần Duy Hưng, Hà Nội"
-                      onChange={(e) => {
-                        setDirectionOriginCustom(e.target.value);
-                        if (customOriginError) setCustomOriginError(null);
-                      }}
-                      className="text-xs md:text-sm h-9 rounded-xl border-gray-200"
-                    />
-                    <p className="text-[11px] text-gray-500">Mô tả địa chỉ hoặc tên địa điểm cụ thể để chúng tôi tìm kiếm.</p>
-                    {customOriginError && <p className="text-[11px] text-red-500">{customOriginError}</p>}
-                  </div>
-                )}
+                {routeError && <p className="text-[11px] text-red-500">{routeError}</p>}
 
-                {directionOriginMode === "my-location" && (
-                  <div className="ml-5 flex items-center justify-between text-[11px] text-gray-500 gap-2">
-                    <span>
-                      {userLocation
-                        ? `Đã cập nhật: ${userLocation.lat.toFixed(4)}, ${userLocation.lng.toFixed(4)}`
-                        : "Chưa truy cập được vị trí của bạn"}
-                    </span>
-                    <Button
-                      variant="outline"
-                      size="sm"
-                      onClick={requestUserLocation}
-                      disabled={isLoadingLocation}
-                      className="h-7 px-2 text-xs"
-                    >
-                      {isLoadingLocation ? "Đang lấy..." : "Lấy vị trí"}
-                    </Button>
-                  </div>
-                )}
+                {directionOriginMode === "branch" &&
+                  directionOriginBranchId &&
+                  directionToId &&
+                  directionOriginBranchId === directionToId && (
+                    <p className="text-[11px] text-red-500">Vui lòng chọn 2 chi nhánh khác nhau.</p>
+                  )}
               </div>
+            )}
 
-              <div className="bg-gray-50 rounded-2xl p-3 shadow-inner border border-gray-100">
-                <div className="flex items-center gap-2">
-                  <div className="w-3 h-3 rounded-full border border-gray-400 bg-orange-500"></div>
-                  <div className="relative flex-1">
-                    <select
-                      value={directionToId}
-                      onChange={(e) => setDirectionToId(e.target.value)}
-                      className="w-full appearance-none bg-white rounded-xl border border-gray-200 px-3 py-2 pr-7 text-xs md:text-sm focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent transition"
-                    >
-                      <option value="">Chọn điểm đến</option>
-                      {branchesWithDistance.map((branch) => (
-                        <option key={branch.id} value={branch.id}>
-                          {branch.city} - {branch.name}
-                          {distanceLabelMap.get(branch.id) ? ` (${distanceLabelMap.get(branch.id)})` : ""}
-                        </option>
-                      ))}
-                    </select>
-                    <span className="pointer-events-none absolute right-2 top-1/2 -translate-y-1/2 text-gray-400">▾</span>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <div className="flex flex-col gap-2">
-              <Button
-                size="sm"
-                disabled={isDirectionsButtonDisabled || isRouteLoading}
-                onClick={handleShowRouteOnMap}
-                className="w-full text-xs md:text-sm bg-orange-500 hover:bg-orange-400 text-white disabled:opacity-50"
-              >
-                {isRouteLoading ? "Đang tính..." : "Chỉ đường"}
-              </Button>
-            </div>
-
-            {routeSummary && (distanceLabel || durationLabel) && (
-              <div className="text-[11px] text-blue-800 bg-blue-50 border border-blue-100 rounded-md px-3 py-2">
+            {!isDirectionsOpen && routeSummary && (distanceLabel || durationLabel) && (
+              <div className="mt-3 text-[11px] text-blue-800 bg-blue-50 border border-blue-100 rounded-md px-3 py-2">
                 {distanceLabel && <p>Quãng đường: {distanceLabel}</p>}
                 {durationLabel && <p>Thời gian dự kiến: {durationLabel}</p>}
               </div>
             )}
-
-            {routeError && <p className="text-[11px] text-red-500">{routeError}</p>}
-
-            {directionOriginMode === "branch" &&
-              directionOriginBranchId &&
-              directionToId &&
-              directionOriginBranchId === directionToId && (
-                <p className="text-[11px] text-red-500">Vui lòng chọn 2 chi nhánh khác nhau.</p>
-              )}
           </div>
 
           <div className={listWrapperClasses}>
