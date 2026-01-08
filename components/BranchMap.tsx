@@ -514,8 +514,8 @@ const branches: Branch[] = [
     address: "Số 26 Thi Sách, P. Bến Nghé, Quận 1",
     phone: "0889 866 666",
     services: ["Tư vấn", "Rửa mặt", "Mỹ phẩm"],
-    lat: 10.84323903060721, 
-    lng: 106.84284238534258,
+    lat: 10.779039475516049, 
+    lng: 106.70407594200802,
     hours: "10:00 - 20:00",
     mapsUrl: "https://maps.app.goo.gl/RuMprWSEBAn7cU468",
     city: "Hồ Chí Minh",
@@ -527,8 +527,8 @@ const branches: Branch[] = [
     address: "Đường D2A, Khu đô thị, Vinhomes Grand Park, Thành phố Hồ Chí Minh, 700000",
     phone: "0889 866 666",
     services: ["Tư vấn", "Rửa mặt", "Mỹ phẩm"],
-    lat: 21.052851,
-    lng: 105.780876,
+    lat: 10.843316754323345, 
+    lng: 106.84251074622574,
     hours: "10:00 - 22:00",
     mapsUrl: "https://maps.app.goo.gl/ocPmwDAyLQgX2FWM9",
     city: "Hà Nội",
@@ -651,19 +651,6 @@ const branches: Branch[] = [
     mapsUrl: "https://maps.app.goo.gl/yEabGLXEpX1bfSPaA",
     city: "Vũng Tàu",
   },
-
-  // {
-  //   id: 43,
-  //   name: "Hạ Long - Vũng Tàu",
-  //   address: "Số 136 Hạ Long, Phường 2, TP Vũng Tàu",
-  //   phone: "0889 866 666",
-  //   services: ["Tư vấn", "Rửa mặt", "Mỹ phẩm"],
-  //   lat: 10.3399596,
-  //   lng: 107.072538,
-  //   hours: "10:00 - 20:00",
-  //   mapsUrl:"https://maps.app.goo.gl/1sFrAquabMLqRB4m7",
-  //   city: "Vũng Tàu",
-  // },
 
   // Nha Trang - 1 Chi Nhánh
   {
