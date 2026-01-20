@@ -666,6 +666,22 @@ const branches: Branch[] = [
     mapsUrl: "https://maps.app.goo.gl/NSYt6o2ZTYnJWrnD7",
     city: "Nha Trang",
   },
+
+  // Hải Phòng
+  {
+    id: 52,
+    name: "Aeon Mall Hải Phòng",
+    address:
+      "Glam Beautique - Tầng 1 10 Võ Nguyên Giáp, Phường, Lê Chân, Hải Phòng Hải Phòng, Haiphong City, 04067",
+    phone: "0889 866 666",
+    services: ["Tư vấn", "Rửa mặt", "Mỹ phẩm"],
+    lat: 20.83207391333833, 
+    lng: 106.68256693948133,
+    hours: "10:00 - 22:00",
+    mapsUrl: "https://maps.app.goo.gl/NSYt6o2ZTYnJWrnD7",
+    city: "Hải Phòng",
+  },
+
 ];
 
 const cities = [
@@ -675,6 +691,7 @@ const cities = [
   "Đà Nẵng",
   "Vũng Tàu",
   "Nha Trang",
+  "Hải Phòng"
 ];
 const branchTypes = ["Tất cả", "Chính", "Phụ"];
 const serviceTypes = ["Tư vấn", "Rửa mặt", "Mỹ phẩm"];
