@@ -531,7 +531,7 @@ const branches: Branch[] = [
     lng: 106.84251074622574,
     hours: "10:00 - 22:00",
     mapsUrl: "https://maps.app.goo.gl/ocPmwDAyLQgX2FWM9",
-    city: "Hà Nội",
+    city: "Hồ Chí Minh",
   },
   {
     id: 37,
@@ -677,6 +677,20 @@ const branches: Branch[] = [
     services: ["Tư vấn", "Rửa mặt", "Mỹ phẩm"],
     lat: 20.83207391333833, 
     lng: 106.68256693948133,
+    hours: "10:00 - 22:00",
+    mapsUrl: "https://maps.app.goo.gl/NSYt6o2ZTYnJWrnD7",
+    city: "Hải Phòng",
+  },
+
+  {
+    id: 53,
+    name: "Vincom Imperia Hải Phòng",
+    address:
+      "1 Bạch Đằng, Phường, Hồng Bàng, Hải Phòng 04067, Vietnam",
+    phone: "0889 866 666",
+    services: ["Tư vấn", "Rửa mặt", "Mỹ phẩm"],
+    lat: 20.86263691768238, 
+    lng: 106.66209186404255,
     hours: "10:00 - 22:00",
     mapsUrl: "https://maps.app.goo.gl/NSYt6o2ZTYnJWrnD7",
     city: "Hải Phòng",
