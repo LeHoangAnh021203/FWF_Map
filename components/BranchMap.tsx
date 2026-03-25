@@ -440,7 +440,7 @@ const branches: Branch[] = [
     address: "Tầng 3, Estella Height, 88 Song Hành, An Phú, Thủ Đức",
     phone: "0889 866 666",
     services: ["Tư vấn", "Rửa mặt", "Mỹ phẩm"],
-    lat: 10.801892706798602, 
+    lat: 10.801892706798602,
     lng: 106.7493020214425,
     hours: "9:30 - 22:00",
     mapsUrl: "https://maps.app.goo.gl/7v6oXMh3pjBwrp5X8",
@@ -514,7 +514,7 @@ const branches: Branch[] = [
     address: "Số 26 Thi Sách, P. Bến Nghé, Quận 1",
     phone: "0889 866 666",
     services: ["Tư vấn", "Rửa mặt", "Mỹ phẩm"],
-    lat: 10.779039475516049, 
+    lat: 10.779039475516049,
     lng: 106.70407594200802,
     hours: "10:00 - 20:00",
     mapsUrl: "https://maps.app.goo.gl/RuMprWSEBAn7cU468",
@@ -527,7 +527,7 @@ const branches: Branch[] = [
     address: "Đường D2A, Khu đô thị, Vinhomes Grand Park, Thành phố Hồ Chí Minh, 700000",
     phone: "0889 866 666",
     services: ["Tư vấn", "Rửa mặt", "Mỹ phẩm"],
-    lat: 10.843316754323345, 
+    lat: 10.843316754323345,
     lng: 106.84251074622574,
     hours: "10:00 - 22:00",
     mapsUrl: "https://maps.app.goo.gl/ocPmwDAyLQgX2FWM9",
@@ -675,26 +675,26 @@ const branches: Branch[] = [
       "Glam Beautique - Tầng 1 10 Võ Nguyên Giáp, Phường, Lê Chân, Hải Phòng Hải Phòng, Haiphong City, 04067",
     phone: "0889 866 666",
     services: ["Tư vấn", "Rửa mặt", "Mỹ phẩm"],
-    lat: 20.83207391333833, 
+    lat: 20.83207391333833,
     lng: 106.68256693948133,
     hours: "10:00 - 22:00",
     mapsUrl: "https://maps.app.goo.gl/NSYt6o2ZTYnJWrnD7",
     city: "Hải Phòng",
   },
 
-  {
-    id: 53,
-    name: "Vincom Imperia Hải Phòng",
-    address:
-      "1 Bạch Đằng, Phường, Hồng Bàng, Hải Phòng 04067, Vietnam",
-    phone: "0889 866 666",
-    services: ["Tư vấn", "Rửa mặt", "Mỹ phẩm"],
-    lat: 20.86263691768238, 
-    lng: 106.66209186404255,
-    hours: "10:00 - 22:00",
-    mapsUrl: "https://maps.app.goo.gl/NSYt6o2ZTYnJWrnD7",
-    city: "Hải Phòng",
-  },
+  // {
+  //   id: 53,
+  //   name: "Vincom Imperia Hải Phòng",
+  //   address:
+  //     "1 Bạch Đằng, Phường, Hồng Bàng, Hải Phòng 04067, Vietnam",
+  //   phone: "0889 866 666",
+  //   services: ["Tư vấn", "Rửa mặt", "Mỹ phẩm"],
+  //   lat: 20.86263691768238, 
+  //   lng: 106.66209186404255,
+  //   hours: "10:00 - 22:00",
+  //   mapsUrl: "https://maps.app.goo.gl/NSYt6o2ZTYnJWrnD7",
+  //   city: "Hải Phòng",
+  // },
 
 ];
 
@@ -955,8 +955,7 @@ export default function BranchMap() {
           marker.on("click", () => {
             const content = `
             <div style="min-width: 250px;">
-              <h3 style="margin: 0 0 8px 0; font-weight: 600; color: #1f2937;">${
-                branch.name
+              <h3 style="margin: 0 0 8px 0; font-weight: 600; color: #1f2937;">${branch.name
               }</h3>
               <div style="margin-bottom: 6px; color: #6b7280; font-size: 14px;">
                 <strong>📍</strong> ${branch.address}
@@ -970,11 +969,11 @@ export default function BranchMap() {
             
               <div style="margin-bottom: 12px;">
                 ${branch.services
-                  .map(
-                    (service) =>
-                      `<span style="background: #f3f4f6; color: #374151; padding: 2px 6px; border-radius: 8px; font-size: 11px; margin-right: 4px; margin-bottom: 4px; display: inline-block;">${service}</span>`
-                  )
-                  .join("")}
+                .map(
+                  (service) =>
+                    `<span style="background: #f3f4f6; color: #374151; padding: 2px 6px; border-radius: 8px; font-size: 11px; margin-right: 4px; margin-bottom: 4px; display: inline-block;">${service}</span>`
+                )
+                .join("")}
               </div>
               <div style="display: flex; gap: 8px; margin-top: 8px;">
                 <button onclick="window.openBooking(${branch.id})" style="
@@ -1261,9 +1260,9 @@ export default function BranchMap() {
               alert(buildPermissionHelp());
             }
           })
-          .catch(() => {});
+          .catch(() => { });
       }
-    } catch {}
+    } catch { }
 
     setIsLoadingLocation(true);
     navigator.geolocation.getCurrentPosition(
@@ -1355,9 +1354,8 @@ export default function BranchMap() {
 
     const content = `
       <div style="min-width: 200px; max-width: 280px;">
-        <h3 style="margin: 0 0 8px 0; font-weight: 600; color: #1f2937; font-size: 14px;">${
-          branch.name
-        }</h3>
+        <h3 style="margin: 0 0 8px 0; font-weight: 600; color: #1f2937; font-size: 14px;">${branch.name
+      }</h3>
         <div style="margin-bottom: 6px; color: #6b7280; font-size: 12px;">
           <strong>📍</strong> ${branch.address}
         </div>
@@ -1370,11 +1368,11 @@ export default function BranchMap() {
        
         <div style="margin-bottom: 12px;">
           ${branch.services
-            .map(
-              (service) =>
-                `<span style="background: #f3f4f6; color: #374151; padding: 2px 6px; border-radius: 8px; font-size: 10px; margin-right: 4px; margin-bottom: 4px; display: inline-block;">${service}</span>`
-            )
-            .join("")}
+        .map(
+          (service) =>
+            `<span style="background: #f3f4f6; color: #374151; padding: 2px 6px; border-radius: 8px; font-size: 10px; margin-right: 4px; margin-bottom: 4px; display: inline-block;">${service}</span>`
+        )
+        .join("")}
         </div>
         <div style="display: flex; gap: 8px; margin-top: 8px;">
           <button onclick="window.openBooking(${branch.id})" style="
@@ -1459,12 +1457,12 @@ export default function BranchMap() {
         const routePoints: L.LatLngTuple[] =
           routeCoordinates && routeCoordinates.length > 1
             ? routeCoordinates.map(
-                (point) => [point[0], point[1]] as L.LatLngTuple
-              )
+              (point) => [point[0], point[1]] as L.LatLngTuple
+            )
             : [
-                [origin.lat, origin.lng] as L.LatLngTuple,
-                [destination.lat, destination.lng] as L.LatLngTuple,
-              ];
+              [origin.lat, origin.lng] as L.LatLngTuple,
+              [destination.lat, destination.lng] as L.LatLngTuple,
+            ];
 
         const polyline = L.polyline(routePoints, {
           color: "#f97316",
@@ -1536,22 +1534,20 @@ export default function BranchMap() {
         )}
 
         <div
-          className={`absolute top-2 md:top-4 ${
-            showSidebar
+          className={`absolute top-2 md:top-4 ${showSidebar
               ? isMobile
                 ? "left-2"
                 : "left-2 md:left-4"
               : isMobile
-              ? "left-2"
-              : "left-10 md:left-16"
-          } right-2 md:right-4 z-[1000] flex gap-2`}
+                ? "left-2"
+                : "left-10 md:left-16"
+            } right-2 md:right-4 z-[1000] flex gap-2`}
         ></div>
 
         {showFilters && (
           <Card
-            className={`absolute top-16 ${
-              showSidebar ? "left-4" : "left-16"
-            } right-4 z-[1000] max-w-md shadow-lg`}
+            className={`absolute top-16 ${showSidebar ? "left-4" : "left-16"
+              } right-4 z-[1000] max-w-md shadow-lg`}
           >
             <CardHeader>
               <CardTitle className="text-lg">Bộ lọc</CardTitle>
@@ -1923,32 +1919,32 @@ function BookingForm({
       return slots.length > 0
         ? slots
         : [
-            "09:30",
-            "10:00",
-            "10:30",
-            "11:00",
-            "11:30",
-            "12:00",
-            "12:30",
-            "13:00",
-            "13:30",
-            "14:00",
-            "14:30",
-            "15:00",
-            "15:30",
-            "16:00",
-            "16:30",
-            "17:00",
-            "17:30",
-            "18:00",
-            "18:30",
-            "19:00",
-            "19:30",
-            "20:00",
-            "20:30",
-            "21:00",
-            "21:30",
-          ];
+          "09:30",
+          "10:00",
+          "10:30",
+          "11:00",
+          "11:30",
+          "12:00",
+          "12:30",
+          "13:00",
+          "13:30",
+          "14:00",
+          "14:30",
+          "15:00",
+          "15:30",
+          "16:00",
+          "16:30",
+          "17:00",
+          "17:30",
+          "18:00",
+          "18:30",
+          "19:00",
+          "19:30",
+          "20:00",
+          "20:30",
+          "21:00",
+          "21:30",
+        ];
     } catch (error) {
       console.error("Error parsing branch hours:", error);
       return [
@@ -2028,8 +2024,7 @@ function BookingForm({
     } catch (error) {
       console.error("❌ Booking error:", error);
       alert(
-        `❌ Đặt lịch thất bại!\n\n⚠️ Lỗi gửi email: ${
-          error instanceof Error ? error.message : "Unknown error"
+        `❌ Đặt lịch thất bại!\n\n⚠️ Lỗi gửi email: ${error instanceof Error ? error.message : "Unknown error"
         }\n\nLiên hệ ngay với chúng tôi để được giải đáp hoặc đặt lịch qua Hotline 08898 66666`
       );
     }
