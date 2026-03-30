@@ -533,18 +533,7 @@ const branches: Branch[] = [
     mapsUrl: "https://maps.app.goo.gl/ocPmwDAyLQgX2FWM9",
     city: "Hồ Chí Minh",
   },
-  {
-    id: 37,
-    name: "MVillage - Nguyễn Du",
-    address: "149 - 151 Nguyễn Du, P. Bến Thành, Quận 1",
-    phone: "0889 866 666",
-    services: ["Tư vấn", "Rửa mặt", "Mỹ phẩm"],
-    lat: 10.772451,
-    lng: 106.6929858,
-    hours: "10:00 - 20:00",
-    mapsUrl: "https://maps.app.goo.gl/yzw8ZyEcn2EpsFuT6",
-    city: "Hồ Chí Minh",
-  },
+
   {
     id: 38,
     name: "Vincom 3/2 - L4-03",
@@ -1535,12 +1524,12 @@ export default function BranchMap() {
 
         <div
           className={`absolute top-2 md:top-4 ${showSidebar
-              ? isMobile
-                ? "left-2"
-                : "left-2 md:left-4"
-              : isMobile
-                ? "left-2"
-                : "left-10 md:left-16"
+            ? isMobile
+              ? "left-2"
+              : "left-2 md:left-4"
+            : isMobile
+              ? "left-2"
+              : "left-10 md:left-16"
             } right-2 md:right-4 z-[1000] flex gap-2`}
         ></div>
 
