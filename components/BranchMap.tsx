@@ -70,12 +70,12 @@ const branches: Branch[] = [
   },
   {
     id: 3,
-    name: "Imperia Sky Garden - Toà C, Shophouse C07",
-    address: "423 Minh Khai, Phường Vĩnh Tuy, Quận Hai Bà Trưng, TP Hà Nội",
+    name: "Face Wash Fox - Hanoi Centre",
+    address: "tòa nhà Tiến Bộ Plaza, 175 P. Nguyễn Thái Học, Cát Linh, Ô Chợ Dừa, Hà Nội, Việt Nam",
     phone: "0889 866 666",
     services: ["Tư vấn", "Rửa mặt", "Mỹ phẩm"],
-    lat: 20.9982419,
-    lng: 105.8663047,
+    lat: 15.85101831489765,
+    lng: 100.99102143171238,
     hours: "10:00 - 20:00",
     mapsUrl: "https://maps.app.goo.gl/tkXNsBTsAKNqK4Vi7",
     city: "Hà Nội",
@@ -671,19 +671,19 @@ const branches: Branch[] = [
     city: "Hải Phòng",
   },
 
-  // {
-  //   id: 53,
-  //   name: "Vincom Imperia Hải Phòng",
-  //   address:
-  //     "1 Bạch Đằng, Phường, Hồng Bàng, Hải Phòng 04067, Vietnam",
-  //   phone: "0889 866 666",
-  //   services: ["Tư vấn", "Rửa mặt", "Mỹ phẩm"],
-  //   lat: 20.86263691768238, 
-  //   lng: 106.66209186404255,
-  //   hours: "10:00 - 22:00",
-  //   mapsUrl: "https://maps.app.goo.gl/NSYt6o2ZTYnJWrnD7",
-  //   city: "Hải Phòng",
-  // },
+  {
+    id: 53,
+    name: "Vincom Imperia Hải Phòng",
+    address:
+      "1 Bạch Đằng, Phường, Hồng Bàng, Hải Phòng 04067, Vietnam",
+    phone: "0889 866 666",
+    services: ["Tư vấn", "Rửa mặt", "Mỹ phẩm"],
+    lat: 20.86263691768238, 
+    lng: 106.66209186404255,
+    hours: "10:00 - 22:00",
+    mapsUrl: "https://maps.app.goo.gl/NSYt6o2ZTYnJWrnD7",
+    city: "Hải Phòng",
+  },
 
 ];
 
