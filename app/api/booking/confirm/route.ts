@@ -149,7 +149,10 @@ export async function POST(request: Request) {
     const subject = `Xác nhận đặt lịch - ${branchName}`;
     const text = `Khách hàng: ${customerName}\nĐiện thoại: ${customerPhone}\nEmail: ${customerEmail}\nDịch vụ: ${service}\nChi nhánh: ${branchName}\nĐịa chỉ: ${branchAddress}\nNgày: ${bookingDate}\nGiờ: ${bookingTime}\nSố khách: ${bookingCustomer}`;
     const html = `
-      <h2>Xác nhận đặt lịch</h2>
+      <h2>Ghi nhận đăng ký đặt lịch</h2>
+      <p><strong><span style="color: #f97316;">Face Wash Fox</span> sẽ sớm liên hệ với bạn để xác nhận lịch hẹn.</strong></p>
+      <p><strong>Hãy chú ý điện thoại để không bỏ lỡ cuộc gọi từ <span style="color: #f97316;">nhà Cáo</span> nhé!</strong></p>
+      <p><strong>Liên hệ ngay với chúng tôi để được giải đáp hoặc đặt lịch qua Hotline: 08898 66666</strong></p>
       <p><strong>Khách hàng:</strong> ${customerName}</p>
       <p><strong>Điện thoại:</strong> ${customerPhone}</p>
       <p><strong>Email:</strong> ${customerEmail}</p>
@@ -159,6 +162,7 @@ export async function POST(request: Request) {
       <p><strong>Ngày:</strong> ${bookingDate}</p>
       <p><strong>Giờ:</strong> ${bookingTime}</p>
       <p><strong>Số khách:</strong> ${bookingCustomer}</p>
+      
     `;
 
     // Transport from env
@@ -752,5 +756,4 @@ ${isProduction || isServerless ? '⚠️ Cần cập nhật thủ công trong Pr
     );
   }
 }
-
 
