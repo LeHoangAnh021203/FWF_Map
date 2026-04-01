@@ -42,6 +42,36 @@ interface MapInstance {
   popup?: L.Popup;
 }
 
+const HANOI_CENTRE_BRANCH_ID = 3;
+const HANOI_CENTRE_WEEKDAY_HOURS = "10:00 - 21:30";
+const HANOI_CENTRE_WEEKEND_HOURS = "10:00 - 22:00";
+
+const parseLocalDate = (dateString: string) => {
+  const [year, month, day] = dateString.split("-").map(Number);
+  if (!year || !month || !day) return null;
+  return new Date(year, month - 1, day);
+};
+
+const getBranchHoursForDate = (branch: Branch, dateString?: string) => {
+  if (branch.id !== HANOI_CENTRE_BRANCH_ID) return branch.hours;
+  if (!dateString) return HANOI_CENTRE_WEEKDAY_HOURS;
+
+  const parsedDate = parseLocalDate(dateString);
+  if (!parsedDate || Number.isNaN(parsedDate.getTime())) {
+    return HANOI_CENTRE_WEEKDAY_HOURS;
+  }
+
+  const dayOfWeek = parsedDate.getDay();
+  return dayOfWeek === 0 || dayOfWeek === 6
+    ? HANOI_CENTRE_WEEKEND_HOURS
+    : HANOI_CENTRE_WEEKDAY_HOURS;
+};
+
+const getBranchHoursLabel = (branch: Branch) => {
+  if (branch.id !== HANOI_CENTRE_BRANCH_ID) return branch.hours;
+  return `Thứ 2 - Thứ 6: ${HANOI_CENTRE_WEEKDAY_HOURS}; Thứ 7 - CN: ${HANOI_CENTRE_WEEKEND_HOURS}`;
+};
+
 const branches: Branch[] = [
   // Hà Nội - 12 Chi Nhánh
   {
@@ -76,7 +106,7 @@ const branches: Branch[] = [
     services: ["Tư vấn", "Rửa mặt", "Mỹ phẩm"],
     lat: 21.031559387681032,
     lng: 105.82824367598424,
-    hours: "10:00 - 20:00",
+    hours: "10:00 - 21:30",
     mapsUrl: "https://maps.app.goo.gl/tkXNsBTsAKNqK4Vi7",
     city: "Hà Nội",
   },
@@ -331,7 +361,7 @@ const branches: Branch[] = [
     services: ["Tư vấn", "Rửa mặt", "Mỹ phẩm"],
     lat: 10.7290836,
     lng: 106.7188731,
-    hours: "8:00 - 22:00",
+    hours: "10:00 - 22:00",
     mapsUrl: "https://maps.app.goo.gl/WmnjULritmo2htiv8",
     city: "Hồ Chí Minh",
   },
@@ -953,7 +983,7 @@ export default function BranchMap() {
                 <strong>📞</strong> ${branch.phone}
               </div>
               <div style="margin-bottom: 6px; color: #6b7280; font-size: 14px;">
-                <strong>🕒</strong> ${branch.hours}
+                <strong>🕒</strong> ${getBranchHoursLabel(branch)}
               </div>
             
               <div style="margin-bottom: 12px;">
@@ -1352,7 +1382,7 @@ export default function BranchMap() {
           <strong>📞</strong> ${branch.phone}
         </div>
         <div style="margin-bottom: 6px; color: #6b7280; font-size: 12px;">
-          <strong>🕒</strong> ${branch.hours}
+          <strong>🕒</strong> ${getBranchHoursLabel(branch)}
         </div>
        
         <div style="margin-bottom: 12px;">
@@ -1722,7 +1752,7 @@ export default function BranchMap() {
                 </div>
                 <div className="flex items-center gap-2">
                   <Clock className="h-4 w-4 text-muted-foreground" />
-                  <span>{selectedBranch.hours}</span>
+                  <span>{getBranchHoursLabel(selectedBranch)}</span>
                 </div>
                 <div className="flex items-center gap-2"></div>
                 <div className="flex flex-wrap gap-1 mt-2">
@@ -1966,7 +1996,18 @@ function BookingForm({
     }
   };
 
-  const timeSlots = generateTimeSlots(branch.hours);
+  const bookingHours = selectedDate
+    ? getBranchHoursForDate(branch, selectedDate)
+    : branch.id === HANOI_CENTRE_BRANCH_ID
+      ? HANOI_CENTRE_WEEKDAY_HOURS
+      : branch.hours;
+  const timeSlots = generateTimeSlots(bookingHours);
+
+  useEffect(() => {
+    if (selectedTime && !timeSlots.includes(selectedTime)) {
+      setSelectedTime("");
+    }
+  }, [selectedTime, timeSlots]);
 
   const numberCustomer = ["1", "2", "3", "4", "5"];
 
@@ -2103,7 +2144,8 @@ function BookingForm({
         <label className="text-xs md:text-sm font-medium mb-1 md:mb-2 block">
           Giờ hẹn
           <span className="text-gray-500 font-normal ml-2">
-            (Giờ hoạt động: {branch.hours})
+            (Giờ hoạt động:{" "}
+            {selectedDate ? bookingHours : getBranchHoursLabel(branch)})
           </span>
         </label>
         <select
