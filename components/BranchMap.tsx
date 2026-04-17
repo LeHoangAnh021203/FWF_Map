@@ -145,7 +145,7 @@ const branches: Branch[] = [
     services: ["Tư vấn", "Rửa mặt", "Mỹ phẩm"],
     lat: 21.00419,
     lng: 105.736075,
-    hours: "10:00 - 22:00",
+    hours: "12:00 - 20:00",
     mapsUrl: "https://maps.app.goo.gl/egjq1XPq9nDjBmgr8",
     city: "Hà Nội",
   },
@@ -253,6 +253,20 @@ const branches: Branch[] = [
     hours: "10:00 - 22:00",
     mapsUrl: "https://maps.app.goo.gl/ocPmwDAyLQgX2FWM9",
     city: "Hà Nội",
+  },
+
+  {
+    id: 54,
+    name: "Aeon Mall Hà Đông",
+    address:
+      "T105-1 Tổ dân phố Hoàng Văn Thụ, Phường Dương Nội, Thành phố Hà Nội",
+    phone: "0889 866 666",
+    services: ["Tư vấn", "Rửa mặt", "Mỹ phẩm"],
+    lat: 20.989726,
+    lng: 105.751799,
+    hours: "10:00 - 22:00",
+    mapsUrl: "https://maps.app.goo.gl/NSYt6o2ZTYnJWrnD7",
+    city: "Hải Phòng",
   },
 
   // Hồ Chí Minh - 32 Chi Nhánh
@@ -708,7 +722,7 @@ const branches: Branch[] = [
       "1 Bạch Đằng, Phường, Hồng Bàng, Hải Phòng 04067, Vietnam",
     phone: "0889 866 666",
     services: ["Tư vấn", "Rửa mặt", "Mỹ phẩm"],
-    lat: 20.86263691768238, 
+    lat: 20.86263691768238,
     lng: 106.66209186404255,
     hours: "10:00 - 22:00",
     mapsUrl: "https://maps.app.goo.gl/NSYt6o2ZTYnJWrnD7",
