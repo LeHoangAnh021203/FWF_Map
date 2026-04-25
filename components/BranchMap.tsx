@@ -266,7 +266,7 @@ const branches: Branch[] = [
     lng: 105.751799,
     hours: "10:00 - 22:00",
     mapsUrl: "https://maps.app.goo.gl/NSYt6o2ZTYnJWrnD7",
-    city: "Hải Phòng",
+    city: "Hà Nội",
   },
 
   // Hồ Chí Minh - 32 Chi Nhánh
