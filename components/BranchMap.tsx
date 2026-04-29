@@ -656,6 +656,19 @@ const branches: Branch[] = [
     mapsUrl: "https://maps.app.goo.gl/68gi7urTBKUB53az7",
     city: "Hồ Chí Minh",
   },
+  {
+    id: 55,
+    name: "Face Wash Fox - Thiso Mall ",
+    address:
+      "L1-17A, 10 Mai Chí Thọ, Thủ Thiêm, An Khánh, Hồ Chí Minh.",
+    phone: "0889 866 666",
+    services: ["Tư vấn", "Rửa mặt", "Mỹ phẩm"],
+    lat: 10.7863143,
+    lng: 106.6477828,
+    hours: "10:00 - 20:00",
+    mapsUrl: "https://maps.app.goo.gl/68gi7urTBKUB53az7",
+    city: "Hồ Chí Minh",
+  },
 
   // Đà Nẵng - 1 Chi Nhánh
   {
