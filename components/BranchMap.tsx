@@ -1898,6 +1898,7 @@ function BookingForm({
   const [customerName, setCustomerName] = useState("");
   const [customerPhone, setCustomerPhone] = useState("");
   const [customerEmail, setCustomerEmail] = useState("");
+  const [customerNote, setCustomerNote] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   // Tạo time slots dựa trên giờ hoạt động của từng chi nhánh
@@ -2059,6 +2060,7 @@ function BookingForm({
           bookingDate: selectedDate,
           bookingTime: selectedTime,
           bookingCustomer: selectedCustomer,
+          customerNote: customerNote.trim() || undefined,
         }),
       });
 
@@ -2096,6 +2098,7 @@ function BookingForm({
     setCustomerName("");
     setCustomerPhone("");
     setCustomerEmail("");
+    setCustomerNote("");
 
     // Close dialog
     onClose();
@@ -2149,6 +2152,21 @@ function BookingForm({
         <p className="text-xs text-gray-500 mt-1">
           📧 Email xác nhận sẽ được gửi đến địa chỉ này
         </p>
+      </div>
+
+      <div>
+        <label className="text-xs md:text-sm font-medium mb-1 md:mb-2 block">
+          Ghi chú (tùy chọn)
+        </label>
+        <textarea
+          value={customerNote}
+          onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) =>
+            setCustomerNote(e.target.value)
+          }
+          placeholder="Nhập ghi chú cho lịch hẹn"
+          rows={3}
+          className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm md:text-base resize-y"
+        />
       </div>
 
       <div>

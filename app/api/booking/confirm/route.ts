@@ -90,7 +90,7 @@ export async function POST(request: Request) {
     }
 
     // Data validation
-    const { customerName, customerPhone, customerEmail } = body;
+    const { customerName, customerPhone, customerEmail, customerNote } = body;
     
     // Validate customer name (minimum 2 characters, no numbers)
     if (customerName && (customerName.length < 2 || /\d/.test(customerName))) {
@@ -147,7 +147,8 @@ export async function POST(request: Request) {
 
     // Build content
     const subject = `Xác nhận đặt lịch - ${branchName}`;
-    const text = `Khách hàng: ${customerName}\nĐiện thoại: ${customerPhone}\nEmail: ${customerEmail}\nDịch vụ: ${service}\nChi nhánh: ${branchName}\nĐịa chỉ: ${branchAddress}\nNgày: ${bookingDate}\nGiờ: ${bookingTime}\nSố khách: ${bookingCustomer}`;
+    const noteText = customerNote ? `\nGhi chú: ${customerNote}` : "";
+    const text = `Khách hàng: ${customerName}\nĐiện thoại: ${customerPhone}\nEmail: ${customerEmail}\nDịch vụ: ${service}\nChi nhánh: ${branchName}\nĐịa chỉ: ${branchAddress}\nNgày: ${bookingDate}\nGiờ: ${bookingTime}\nSố khách: ${bookingCustomer}${noteText}`;
     const html = `
       <h2>Ghi nhận đăng ký đặt lịch</h2>
       <p><strong><span style="color: #f97316;">Face Wash Fox</span> sẽ sớm liên hệ với bạn để xác nhận lịch hẹn.</strong></p>
@@ -162,6 +163,7 @@ export async function POST(request: Request) {
       <p><strong>Ngày:</strong> ${bookingDate}</p>
       <p><strong>Giờ:</strong> ${bookingTime}</p>
       <p><strong>Số khách:</strong> ${bookingCustomer}</p>
+      ${customerNote ? `<p><strong>Ghi chú:</strong> ${customerNote}</p>` : ""}
       
     `;
 
@@ -325,6 +327,7 @@ export async function POST(request: Request) {
           bookingDate || "",
           bookingTime || "",
           bookingCustomer || "",
+          customerNote || "",
           targetTab, // Thông tin tab đích
         ];
 
@@ -662,7 +665,7 @@ ${isProduction || isServerless ? '⚠️ Cần cập nhật thủ công trong Pr
           `Dịch vụ: ${service || "(Chưa chọn)"}\n` +
           `Chi nhánh: ${branchName}${branchAddress ? `\nĐ/c: ${branchAddress}` : ""}\n` +
           `Thời gian: ${bookingDate} ${bookingTime}\n` +
-          `Số khách: ${bookingCustomer || "1"}`;
+          `Số khách: ${bookingCustomer || "1"}${customerNote ? `\nGhi chú: ${customerNote}` : ""}`;
 
         console.log('📝 Message content:', zaloText);
 
@@ -756,4 +759,3 @@ ${isProduction || isServerless ? '⚠️ Cần cập nhật thủ công trong Pr
     );
   }
 }
-
