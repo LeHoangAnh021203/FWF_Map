@@ -319,17 +319,26 @@ export async function POST(request: Request) {
         // Use same structure as Google Sheets API (booking data)
         // Thêm thông tin tab ở cuối để xác định tab đích
         const targetTab = body.targetTab || "List 20_10"; // Mặc định tab "List 20_10"
-        const payload = [
-          branchName || "",
-          customerName || "",
-          customerPhone || "",
-          customerEmail || "",
-          bookingDate || "",
-          bookingTime || "",
-          bookingCustomer || "",
-          customerNote || "",
-          targetTab, // Thông tin tab đích
-        ];
+        // Send object format to support multiple Apps Script schemas.
+        const payload = {
+          branch: branchName || "",
+          branchName: branchName || "",
+          name: customerName || "",
+          fullName: customerName || "",
+          phone: customerPhone || "",
+          customerPhone: customerPhone || "",
+          email: customerEmail || "",
+          customerEmail: customerEmail || "",
+          date: bookingDate || "",
+          bookingDate: bookingDate || "",
+          time: bookingTime || "",
+          bookingTime: bookingTime || "",
+          guests: bookingCustomer || "",
+          bookingCustomer: bookingCustomer || "",
+          note: customerNote || "",
+          customerNote: customerNote || "",
+          targetTab,
+        };
 
         const gasRes = await fetch(gasUrl, {
           method: "POST",
@@ -347,11 +356,19 @@ export async function POST(request: Request) {
             gasBody = null;
           }
 
-          if (gasBody && gasBody.success === false) {
+          if (
+            gasBody &&
+            (gasBody.success === false ||
+              gasBody.ok === false ||
+              gasBody.status === "error")
+          ) {
             gasDetails = {
               attempted: true,
               success: false,
-              error: gasBody.error || "Google Apps Script returned success=false",
+              error:
+                gasBody.error ||
+                gasBody.message ||
+                "Google Apps Script returned error status",
               response: gasBody,
             };
           } else {
