@@ -2061,6 +2061,7 @@ function BookingForm({
           bookingTime: selectedTime,
           bookingCustomer: selectedCustomer,
           customerNote: customerNote.trim() || undefined,
+          targetTab: "map",
         }),
       });
 

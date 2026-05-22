@@ -318,7 +318,7 @@ export async function POST(request: Request) {
       try {
         // Use same structure as Google Sheets API (booking data)
         // Thêm thông tin tab ở cuối để xác định tab đích
-        const targetTab = body.targetTab || "List 20_10"; // Mặc định tab "List 20_10"
+        const targetTab = body.targetTab || "map"; // Mặc định lưu tab map
         // Send object format to support multiple Apps Script schemas.
         const payload = {
           branch: branchName || "",

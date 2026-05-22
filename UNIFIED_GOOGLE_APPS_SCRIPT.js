@@ -2,9 +2,13 @@
 if (typeof CONFIG === 'undefined') {
   var CONFIG = {
     SHEET_ID: '1Q-FlAnp591WKhE9qJoKH-yI92yl7gY1zQrg-YqRkwyM',
-    DEFAULT_SHEET_NAME: 'List 20_10', // Tab mặc định
+    DEFAULT_SHEET_NAME: 'map', // Tab mặc định
     MAP_SHEET_NAME: 'map',             // Tab map
   };
+}
+
+function doGet() {
+  return json({ ok: true, message: 'Booking endpoint is running' });
 }
 
 function doPost(e) {
@@ -13,19 +17,17 @@ function doPost(e) {
     if (!raw) return json({ success: false, error: 'Empty body' });
 
     let data = JSON.parse(raw);
-    let targetSheet = CONFIG.DEFAULT_SHEET_NAME; // Mặc định
+    const targetSheet = CONFIG.MAP_SHEET_NAME || CONFIG.DEFAULT_SHEET_NAME; // Luôn lưu vào map
 
     // Xử lý dữ liệu đầu vào
     if (Array.isArray(data)) {
       // Legacy format: [branch, name, phone, email, date, time, guests, targetTab]
       if (data.length === 8) {
-        targetSheet = data[7] || CONFIG.DEFAULT_SHEET_NAME;
         data = data.slice(0, 7);
       }
 
       // New format: [branch, name, phone, email, date, time, guests, note, targetTab]
-      if (data.length === 9) {
-        targetSheet = data[8] || CONFIG.DEFAULT_SHEET_NAME;
+      if (data.length >= 9) {
         data = data.slice(0, 8);
       }
       
@@ -44,10 +46,18 @@ function doPost(e) {
       };
     }
 
-    const { branch, name, phone, email, date, time, guests, note } = data || {};
+    // Hỗ trợ thêm object payload từ backend mới
+    const branch = (data && (data.branch || data.branchName)) || '';
+    const name = (data && (data.name || data.fullName || data.customerName)) || '';
+    const phone = (data && (data.phone || data.customerPhone)) || '';
+    const email = (data && (data.email || data.customerEmail)) || '';
+    const date = (data && (data.date || data.bookingDate)) || '';
+    const time = (data && (data.time || data.bookingTime)) || '';
+    const guests = (data && (data.guests || data.bookingCustomer)) || '';
+    const note = (data && (data.note || data.customerNote)) || '';
     
     // Validation
-    if (!name || !phone) return json({ success: false, error: 'Missing required fields: name, phone' });
+    if (!name || !phone) return json({ ok: false, success: false, error: 'Missing required fields: name, phone' });
 
     // Mở sheet và chọn tab đích
     const ss = SpreadsheetApp.openById(CONFIG.SHEET_ID);
@@ -83,6 +93,7 @@ function doPost(e) {
     sheet.getRange(lastRow, 9).setNumberFormat('yyyy-mm-dd hh:mm:ss');
 
     return json({ 
+      ok: true,
       success: true, 
       message: `Data saved to tab: ${targetSheet}`,
       sheetId: CONFIG.SHEET_ID,
@@ -93,7 +104,7 @@ function doPost(e) {
     });
     
   } catch (err) {
-    return json({ success: false, error: String(err) });
+    return json({ ok: false, success: false, error: String(err) });
   }
 }
 
