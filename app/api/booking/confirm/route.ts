@@ -311,7 +311,7 @@ export async function POST(request: Request) {
     };
 
     // Google Sheets submission via Google Apps Script Web App
-    let gasDetails: { attempted: boolean; success?: boolean; error?: unknown } = { attempted: false };
+    let gasDetails: { attempted: boolean; success?: boolean; error?: unknown; response?: unknown } = { attempted: false };
     const gasUrl = process.env.GOOGLE_SHEETS_WEB_APP_URL;
     if (gasUrl) {
       gasDetails.attempted = true;
@@ -352,9 +352,10 @@ export async function POST(request: Request) {
               attempted: true,
               success: false,
               error: gasBody.error || "Google Apps Script returned success=false",
+              response: gasBody,
             };
           } else {
-            gasDetails = { attempted: true, success: true };
+            gasDetails = { attempted: true, success: true, response: gasBody };
           }
         }
       } catch (e) {

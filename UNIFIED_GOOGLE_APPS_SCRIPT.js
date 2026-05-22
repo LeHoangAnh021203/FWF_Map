@@ -85,6 +85,10 @@ function doPost(e) {
     return json({ 
       success: true, 
       message: `Data saved to tab: ${targetSheet}`,
+      sheetId: CONFIG.SHEET_ID,
+      tab: targetSheet,
+      lastRow: lastRow,
+      note: note || "",
       timestamp: new Date().toISOString()
     });
     
