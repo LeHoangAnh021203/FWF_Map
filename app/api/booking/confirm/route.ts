@@ -340,11 +340,37 @@ export async function POST(request: Request) {
         if (!gasRes.ok) {
           gasDetails = { attempted: true, success: false, error: `HTTP ${gasRes.status}` };
         } else {
-          gasDetails = { attempted: true, success: true };
+          let gasBody: any = null;
+          try {
+            gasBody = await gasRes.json();
+          } catch {
+            gasBody = null;
+          }
+
+          if (gasBody && gasBody.success === false) {
+            gasDetails = {
+              attempted: true,
+              success: false,
+              error: gasBody.error || "Google Apps Script returned success=false",
+            };
+          } else {
+            gasDetails = { attempted: true, success: true };
+          }
         }
       } catch (e) {
         gasDetails = { attempted: true, success: false, error: e instanceof Error ? e.message : e };
       }
+    }
+
+    if (gasDetails.attempted && !gasDetails.success) {
+      return NextResponse.json(
+        {
+          success: false,
+          error: `Không lưu được dữ liệu vào Google Sheet: ${String(gasDetails.error || "Unknown error")}`,
+          gasDetails,
+        },
+        { status: 502 }
+      );
     }
 
     // Zalo OA notification to admins (optional)

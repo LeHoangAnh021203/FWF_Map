@@ -17,10 +17,16 @@ function doPost(e) {
 
     // Xử lý dữ liệu đầu vào
     if (Array.isArray(data)) {
-      // Nếu có 8 phần tử, phần tử thứ 8 là tên tab
+      // Legacy format: [branch, name, phone, email, date, time, guests, targetTab]
       if (data.length === 8) {
         targetSheet = data[7] || CONFIG.DEFAULT_SHEET_NAME;
-        data = data.slice(0, 7); // Chỉ lấy 7 phần tử đầu
+        data = data.slice(0, 7);
+      }
+
+      // New format: [branch, name, phone, email, date, time, guests, note, targetTab]
+      if (data.length === 9) {
+        targetSheet = data[8] || CONFIG.DEFAULT_SHEET_NAME;
+        data = data.slice(0, 8);
       }
       
       if (data.length < 7) return json({ success: false, error: 'Array must have at least 7 items' });
@@ -33,11 +39,12 @@ function doPost(e) {
         email: data[3], 
         date: data[4], 
         time: data[5], 
-        guests: data[6] 
+        guests: data[6],
+        note: data[7] || ''
       };
     }
 
-    const { branch, name, phone, email, date, time, guests } = data || {};
+    const { branch, name, phone, email, date, time, guests, note } = data || {};
     
     // Validation
     if (!name || !phone) return json({ success: false, error: 'Missing required fields: name, phone' });
@@ -50,8 +57,8 @@ function doPost(e) {
     if (!sheet) {
       sheet = ss.insertSheet(targetSheet);
       // Thêm header row
-      sheet.getRange(1, 1, 1, 8).setValues([[
-        'Chi nhánh', 'Tên khách hàng', 'SĐT', 'Email', 'Ngày', 'Giờ', 'Số khách', 'Thời gian'
+      sheet.getRange(1, 1, 1, 9).setValues([[
+        'Chi nhánh', 'Tên khách hàng', 'SĐT', 'Email', 'Ngày', 'Giờ', 'Số khách', 'Ghi chú', 'Thời gian'
       ]]);
     }
 
@@ -64,6 +71,7 @@ function doPost(e) {
       date || '',
       time || '',
       guests ? Number(guests) : '',
+      note || '',
       new Date(),              // Timestamp
     ];
 
@@ -72,7 +80,7 @@ function doPost(e) {
     
     // Format timestamp
     const lastRow = sheet.getLastRow();
-    sheet.getRange(lastRow, 8).setNumberFormat('yyyy-mm-dd hh:mm:ss');
+    sheet.getRange(lastRow, 9).setNumberFormat('yyyy-mm-dd hh:mm:ss');
 
     return json({ 
       success: true, 
@@ -101,6 +109,7 @@ function testWithTab(tabName) {
     "2024-01-15",
     "14:00",
     "2",
+    "Khách muốn ngồi gần cửa sổ", // Ghi chú
     tabName // Tab đích
   ];
   
