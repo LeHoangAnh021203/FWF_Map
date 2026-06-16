@@ -188,19 +188,7 @@ const branches: Branch[] = [
     mapsUrl: "https://maps.app.goo.gl/W7JgY594TGUY2kUZ7",
     city: "Hà Nội",
   },
-  {
-    id: 10,
-    name: "Vinhome Green Bay - Đại Lộ Thăng Long",
-    address:
-      "Vinhomes Green Bay, Số 7 Đại Lộ Thăng Long, Phường Đại Mỗ, Thành phố Hà Nội",
-    phone: "0889 866 666",
-    services: ["Tư vấn", "Rửa mặt", "Mỹ phẩm"],
-    lat: 21.0013349,
-    lng: 105.784505,
-    hours: "10:00 - 22:00",
-    mapsUrl: "https://maps.app.goo.gl/P7om5stVSsG6mcVn8",
-    city: "Hà Nội",
-  },
+ 
   {
     id: 11,
     name: "Hanoi Tower",
