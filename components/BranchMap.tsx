@@ -672,6 +672,19 @@ const branches: Branch[] = [
     city: "Đà Nẵng",
   },
 
+  {
+    id: 52,
+    name: "Aeon Đà Nẵng",
+    address: "46 Điện Biên Phủ, Thanh Khê, Đà Nẵng 550000, Việt Nam",
+    phone: "0889 866 666",
+    services: ["Tư vấn", "Rửa mặt", "Mỹ phẩm"],
+    lat: 16.0660523465185,
+    lng: 108.20439623202432,
+    hours: "10:00 - 20:00",
+    mapsUrl: "https://maps.app.goo.gl/84J2RgRcNHz4cMyu6",
+    city: "Đà Nẵng",
+  },
+
   // Vũng Tàu - 2 Chi Nhánh
   {
     id: 42,
