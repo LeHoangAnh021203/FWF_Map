@@ -218,7 +218,7 @@ const branches: Branch[] = [
 
   {
     id: 49,
-    name: "Lotte Hanoi",
+    name: "Lotte Liễu Giai",
     address:
       "Tầng 2, Lotte Department Store, Tòa nhà Lotte Center, 54 Liễu Giai, quận Ba Đình, Hà Nội, Việt Nam",
     phone: "0889 866 666",
