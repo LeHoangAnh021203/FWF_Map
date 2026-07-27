@@ -191,7 +191,7 @@ const branches: Branch[] = [
  
   {
     id: 11,
-    name: "Hanoi Tower",
+    name: "Hanoi Tower - 69 Thợ Nhuộm",
     address: "69 Thợ Nhuộm - Hanoi Centre - 175 Nguyễn Thái Học ( Tiến bộ Plaza)",
     phone: "0889 866 666",
     services: ["Tư vấn", "Rửa mặt", "Mỹ phẩm"],
