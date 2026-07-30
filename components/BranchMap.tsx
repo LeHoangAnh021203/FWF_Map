@@ -46,6 +46,24 @@ const HANOI_CENTRE_BRANCH_ID = 3;
 const HANOI_CENTRE_WEEKDAY_HOURS = "10:00 - 21:30";
 const HANOI_CENTRE_WEEKEND_HOURS = "10:00 - 22:00";
 
+const SENKA_LOGO_URL = "/Logo%20Senka.png";
+const SENKA_BRANCH_IDS = new Set([
+  13, // Vincom Center Landmark 81
+  51, // Vincom Mega Mall Grand Park
+  29, // Estella Place (Estella Height)
+  14, // Vincom Mega Mall Thảo Điền
+  24, // Võ Thị Sáu
+  20, // Crescent Mall
+  12, // Parc Mall
+  26, // AEON MALL Tân Phú Celadon
+  31, // AEON MALL Bình Tân
+  3, // Face Wash Fox - Hanoi Centre
+  48, // Times City
+  54, // Aeon Mall Hà Đông
+]);
+
+const isSenkaBranch = (branchId: number) => SENKA_BRANCH_IDS.has(branchId);
+
 const parseLocalDate = (dateString: string) => {
   const [year, month, day] = dateString.split("-").map(Number);
   if (!year || !month || !day) return null;
@@ -516,18 +534,7 @@ const branches: Branch[] = [
     mapsUrl: "https://maps.app.goo.gl/vh2STThY3uqM3Wz76",
     city: "Hồ Chí Minh",
   },
-  // {
-  //   id: 33,
-  //   name: "Saigon Centre",
-  //   address: "Tầng 6 – Số 65 Lê Lợi, P. Bến Nghé, Quận 1",
-  //   phone: "0889 866 666",
-  //   services: ["Tư vấn", "Rửa mặt", "Mỹ phẩm"],
-  //   lat: 10.7731031,
-  //   lng: 106.70105,
-  //   hours: "10:00 - 22:00",
-  //   mapsUrl: "https://maps.app.goo.gl/dYdUEke64RShb4p7A",
-  //   city: "Hồ Chí Minh",
-  // },
+ 
   {
     id: 34,
     name: "1B Sương Nguyệt Ánh",
@@ -952,28 +959,45 @@ export default function BranchMap() {
     }
   }, []);
 
-  // Create custom fox icon function
-  const createFoxIcon = useCallback((L: typeof import("leaflet")) => {
-    return L.divIcon({
-      html: `
-        <div style="
-          width: 40px;
-          height: 40px;
-          border-radius: 50%;
-          box-shadow: 0 4px 8px rgba(0,0,0,0.2);
-          background: white;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-        ">
-          <img src="/logo.png" alt="Face Wash Fox" style="width: 34px; height: 34px; object-fit: contain;" />
-        </div>
-      `,
-      className: "fox-marker",
-      iconSize: [40, 40],
-      iconAnchor: [20, 20],
-    });
-  }, []);
+  const createBranchIcon = useCallback(
+    (L: typeof import("leaflet"), branchId: number) => {
+      if (isSenkaBranch(branchId)) {
+        return L.divIcon({
+          html: `
+            <div class="senka-marker__inner">
+              <img src="/logo.png" alt="Face Wash Fox" class="senka-marker__fox" />
+              <span class="senka-marker__x">×</span>
+              <img src="${SENKA_LOGO_URL}" alt="Senka" class="senka-marker__senka" />
+            </div>
+          `,
+          className: "senka-marker",
+          iconSize: [128, 44],
+          iconAnchor: [64, 22],
+        });
+      }
+
+      return L.divIcon({
+        html: `
+          <div style="
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+            background: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+          ">
+            <img src="/logo.png" alt="Face Wash Fox" style="width: 34px; height: 34px; object-fit: contain;" />
+          </div>
+        `,
+        className: "fox-marker",
+        iconSize: [40, 40],
+        iconAnchor: [20, 20],
+      });
+    },
+    []
+  );
 
   const updateMarkers = useCallback(
     async (branches: Branch[]) => {
@@ -996,7 +1020,7 @@ export default function BranchMap() {
 
         if (!marker) {
           marker = L.marker([branch.lat, branch.lng], {
-            icon: createFoxIcon(L),
+            icon: createBranchIcon(L, branch.id),
           });
 
           marker.on("click", () => {
@@ -1066,7 +1090,7 @@ export default function BranchMap() {
 
       console.log("[v0] Updated markers:", branches.length);
     },
-    [isMapLoaded, createFoxIcon]
+    [isMapLoaded, createBranchIcon]
   );
 
   const fitBoundsToMarkers = useCallback(
@@ -1081,7 +1105,7 @@ export default function BranchMap() {
       const group = L.featureGroup(
         branches.map((branch) =>
           L.marker([branch.lat, branch.lng], {
-            icon: createFoxIcon(L),
+            icon: createBranchIcon(L, branch.id),
           })
         )
       );
@@ -1093,7 +1117,7 @@ export default function BranchMap() {
 
       console.log("[v0] Fitted bounds to", branches.length, "branches");
     },
-    [isMapLoaded, userInteracted, createFoxIcon]
+    [isMapLoaded, userInteracted, createBranchIcon]
   );
 
   useEffect(() => {
