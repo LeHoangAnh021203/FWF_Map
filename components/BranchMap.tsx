@@ -459,19 +459,19 @@ const branches: Branch[] = [
     mapsUrl: "https://maps.app.goo.gl/georubcSDgxQgsva9",
     city: "Hồ Chí Minh",
   },
-  {
-    id: 27,
-    name: "Riviera Point - Quận 7",
-    address:
-      "Toà 3, Đường số 2, Nguyễn Văn Tưởng, P. An Phú, Quận 7, TP. Hồ Chí Minh",
-    phone: "0889 866 666",
-    services: ["Tư vấn", "Rửa mặt", "Mỹ phẩm"],
-    lat: 10.7321115,
-    lng: 106.7291998,
-    hours: "11:00 - 19:00",
-    mapsUrl: "https://maps.app.goo.gl/R48ge7FN2QmtTpHs6",
-    city: "Hồ Chí Minh",
-  },
+  // {
+  //   id: 27,
+  //   name: "Riviera Point - Quận 7",
+  //   address:
+  //     "Toà 3, Đường số 2, Nguyễn Văn Tưởng, P. An Phú, Quận 7, TP. Hồ Chí Minh",
+  //   phone: "0889 866 666",
+  //   services: ["Tư vấn", "Rửa mặt", "Mỹ phẩm"],
+  //   lat: 10.7321115,
+  //   lng: 106.7291998,
+  //   hours: "11:00 - 19:00",
+  //   mapsUrl: "https://maps.app.goo.gl/R48ge7FN2QmtTpHs6",
+  //   city: "Hồ Chí Minh",
+  // },
   {
     id: 28,
     name: "The Symphony - Midtown M6",
