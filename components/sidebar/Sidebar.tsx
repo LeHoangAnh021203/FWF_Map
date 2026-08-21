@@ -94,6 +94,13 @@ const vehicleOptions = [
   { value: "foot", label: "Đi bộ", icon: Footprints },
 ];
 
+const googleTravelModeByVehicle: Record<string, string> = {
+  car: "driving",
+  motorcycle: "driving",
+  bike: "bicycling",
+  foot: "walking",
+};
+
 const toRadians = (value: number) => (value * Math.PI) / 180;
 
 const calculateDistanceMeters = (lat1: number, lng1: number, lat2: number, lng2: number) => {
@@ -215,8 +222,27 @@ const Sidebar: React.FC<SidebarProps> = ({
       destination: { lat: number; lng: number; label?: string },
       options?: { silent?: boolean }
     ) => {
+      const openGoogleMapsFallback = (message: string) => {
+        const travelMode = googleTravelModeByVehicle[selectedVehicle] ?? "driving";
+        const googleMapsUrl = new URL("https://www.google.com/maps/dir/");
+        googleMapsUrl.searchParams.set("api", "1");
+        googleMapsUrl.searchParams.set("origin", `${origin.lat},${origin.lng}`);
+        googleMapsUrl.searchParams.set("destination", `${destination.lat},${destination.lng}`);
+        googleMapsUrl.searchParams.set("travelmode", travelMode);
+
+        setRouteSummary({
+          distance: calculateDistanceMeters(origin.lat, origin.lng, destination.lat, destination.lng),
+          duration: null,
+        });
+
+        if (!options?.silent) {
+          window.open(googleMapsUrl.toString(), "_blank", "noopener,noreferrer");
+          setRouteError(message);
+        }
+      };
+
       if (!vietmapApiKey) {
-        if (!options?.silent) setRouteError("Chưa cấu hình NEXT_PUBLIC_VIETMAP_API_KEY cho VietMap.");
+        openGoogleMapsFallback("Chưa cấu hình VietMap route API nên đã mở chỉ đường bằng Google Maps.");
         return false;
       }
 
@@ -238,7 +264,14 @@ const Sidebar: React.FC<SidebarProps> = ({
         params.append("locale", "vi");
         params.append("apikey", vietmapApiKey);
 
-        const response = await fetch(`https://maps.vietmap.vn/api/route?${params.toString()}`);
+        const response = await fetch(`https://maps.vietmap.vn/api/route/v3?${params.toString()}`);
+        if (response.status === 423) {
+          openGoogleMapsFallback(
+            "VietMap trả lỗi 423 Locked: API key chưa được phép dùng Routing hoặc đang bị khóa. Đã mở chỉ đường bằng Google Maps."
+          );
+          return false;
+        }
+
         if (!response.ok) throw new Error(`Route request failed with status ${response.status}`);
 
         const data = await response.json();
