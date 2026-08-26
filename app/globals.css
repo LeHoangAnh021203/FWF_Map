@@ -240,6 +240,11 @@ body {
   overflow: visible !important;
 }
 
+/* Hide Leaflet / VietMap attribution bar */
+.leaflet-control-attribution {
+  display: none !important;
+}
+
 @keyframes foxPulse {
   0% {
     transform: translate(-50%, -50%) scale(0.8);

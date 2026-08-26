@@ -871,6 +871,7 @@ export default function BranchMap() {
         center: [21.0285, 105.8542], // Hà Nội center
         zoom: 11,
         maxZoom: 19,
+        attributionControl: false,
       });
 
       // Move zoom controls to top-right to avoid sidebar overlap
