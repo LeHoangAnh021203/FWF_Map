@@ -1,7 +1,7 @@
 "use client";
 
 import type React from "react";
-import { useState, useEffect, useRef, useCallback } from "react";
+import { useState, useEffect, useRef, useCallback, useMemo } from "react";
 import {
   Search,
   MapPin,
@@ -33,6 +33,8 @@ interface Branch {
   bookingUrl?: string;
   mapsUrl?: string;
   city: string;
+  /** YYYY-MM-DD — chi nhánh chỉ hiện từ 00:00 ngày này (giờ VN / local) */
+  publishAt?: string;
 }
 
 interface MapInstance {
@@ -50,6 +52,19 @@ const parseLocalDate = (dateString: string) => {
   const [year, month, day] = dateString.split("-").map(Number);
   if (!year || !month || !day) return null;
   return new Date(year, month - 1, day);
+};
+
+const startOfLocalDay = (date: Date) =>
+  new Date(date.getFullYear(), date.getMonth(), date.getDate());
+
+const isBranchPublished = (branch: Branch, referenceDate = new Date()) => {
+  if (!branch.publishAt) return true;
+  const publishDate = parseLocalDate(branch.publishAt);
+  if (!publishDate) return true;
+  return (
+    startOfLocalDay(publishDate).getTime() <=
+    startOfLocalDay(referenceDate).getTime()
+  );
 };
 
 const getBranchHoursForDate = (branch: Branch, dateString?: string) => {
@@ -647,6 +662,22 @@ const branches: Branch[] = [
     city: "Hồ Chí Minh",
   },
 
+  {
+    id: 56,
+    name: "Face Wash Fox - Vincom Đồng Khởi",
+    address:
+      "Tầng B2 - 72 Lê Thánh Tôn, P.Sài Gòn, Tp.HCM.",
+    phone: "0889 866 666",
+    services: ["Tư vấn", "Rửa mặt", "Mỹ phẩm"],
+    lat: 10.7775769,
+    lng: 106.70161,
+    hours: "10:00 - 20:00",
+    mapsUrl:
+      "https://maps.app.goo.gl/t8UWbWjrFdqG2Vqr8",
+    city: "Hồ Chí Minh",
+    publishAt: "2026-09-25",
+  },
+
   // Đà Nẵng - 1 Chi Nhánh
   {
     id: 41,
@@ -757,7 +788,14 @@ export default function BranchMap() {
   const [selectedCity, setSelectedCity] = useState("Tất cả");
   const [selectedBranchType, setSelectedBranchType] = useState("Tất cả");
   const [selectedServices, setSelectedServices] = useState<string[]>([]);
-  const [filteredBranches, setFilteredBranches] = useState(branches);
+  const [publishScheduleTick, setPublishScheduleTick] = useState(0);
+  const publishedBranches = useMemo(
+    () => branches.filter((branch) => isBranchPublished(branch)),
+    [publishScheduleTick]
+  );
+  const [filteredBranches, setFilteredBranches] = useState(() =>
+    branches.filter((branch) => isBranchPublished(branch))
+  );
   const [showFilters] = useState(false);
   const [selectedBranch, setSelectedBranch] = useState<Branch | null>(null);
   const [showBranchDetails, setShowBranchDetails] = useState(false);
@@ -792,7 +830,8 @@ export default function BranchMap() {
       const hash = window.location.hash.replace("#", "");
       if (hash) {
         const branch = branches.find(
-          (b) => generateBranchSlug(b.name) === hash
+          (b) =>
+            generateBranchSlug(b.name) === hash && isBranchPublished(b)
         );
         if (branch) {
           setSelectedBranch(branch);
@@ -1086,8 +1125,15 @@ export default function BranchMap() {
   );
 
   useEffect(() => {
+    const intervalId = setInterval(() => {
+      setPublishScheduleTick((tick) => tick + 1);
+    }, 60_000);
+    return () => clearInterval(intervalId);
+  }, []);
+
+  useEffect(() => {
     const timeoutId = setTimeout(() => {
-      let filtered = branches;
+      let filtered = publishedBranches;
 
       if (searchTerm) {
         filtered = filtered.filter(
@@ -1111,7 +1157,13 @@ export default function BranchMap() {
     }, 300);
 
     return () => clearTimeout(timeoutId);
-  }, [searchTerm, selectedCity, selectedBranchType, selectedServices]);
+  }, [
+    searchTerm,
+    selectedCity,
+    selectedBranchType,
+    selectedServices,
+    publishedBranches,
+  ]);
 
   // Khi map đã load xong, hiển thị tất cả chi nhánh hiện tại
   useEffect(() => {
@@ -1138,7 +1190,9 @@ export default function BranchMap() {
         openDirections: (branchId: number) => void;
       }
     ).openBooking = (branchId: number) => {
-      const branch = branches.find((b) => b.id === branchId);
+      const branch = branches.find(
+        (b) => b.id === branchId && isBranchPublished(b)
+      );
       if (branch) {
         setSelectedBranch(branch);
         setShowBookingForm(true);
@@ -1153,7 +1207,9 @@ export default function BranchMap() {
         openDirections: (branchId: number) => void;
       }
     ).openDirections = (branchId: number) => {
-      const branch = branches.find((b) => b.id === branchId);
+      const branch = branches.find(
+        (b) => b.id === branchId && isBranchPublished(b)
+      );
       if (branch) {
         openDirections(branch);
       }
@@ -1526,7 +1582,7 @@ export default function BranchMap() {
         searchTerm={searchTerm}
         selectedCity={selectedCity}
         cities={cities}
-        allBranches={branches}
+        allBranches={publishedBranches}
         groupedBranches={groupedBranches}
         userLocation={userLocation}
         requestUserLocation={getMyLocation}
@@ -1655,7 +1711,8 @@ export default function BranchMap() {
           <div className="flex items-center gap-2 md:gap-3">
             <div className="w-2 h-2 md:w-3 md:h-3 bg-white rounded-full animate-pulse"></div>
             <span className="text-xs md:text-sm font-semibold">
-              Hiển thị {filteredBranches.length} / {branches.length} chi nhánh
+              Hiển thị {filteredBranches.length} / {publishedBranches.length}{" "}
+              chi nhánh
             </span>
           </div>
           {selectedCity !== "Tất cả" && (
