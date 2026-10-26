@@ -12,7 +12,7 @@ export const runtime = "nodejs";
  *
  * Query:
  * - city?: string — lọc theo thành phố (vd: "Hồ Chí Minh")
- * - published?: "true" | "1" — chỉ trả chi nhánh đã tới ngày publishAt
+ * - published?: "true" | "1" — chỉ trả chi nhánh đang mở (đã tới publishAt, chưa tới unpublishAt)
  * - all?: "true" | "1" — trả toàn bộ kể cả chưa publish (mặc định)
  */
 export async function GET(request: NextRequest) {

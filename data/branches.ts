@@ -12,6 +12,8 @@ export interface Branch {
   city: string;
   /** YYYY-MM-DD — chi nhánh chỉ hiện từ 00:00 ngày này (giờ VN / local) */
   publishAt?: string;
+  /** YYYY-MM-DD — chi nhánh tự ẩn từ 00:00 ngày này (giờ VN / local) */
+  unpublishAt?: string;
 }
 
 const parseLocalDate = (dateString: string) => {
@@ -27,13 +29,23 @@ export const isBranchPublished = (
   branch: Branch,
   referenceDate = new Date()
 ) => {
-  if (!branch.publishAt) return true;
-  const publishDate = parseLocalDate(branch.publishAt);
-  if (!publishDate) return true;
-  return (
-    startOfLocalDay(publishDate).getTime() <=
-    startOfLocalDay(referenceDate).getTime()
-  );
+  const today = startOfLocalDay(referenceDate).getTime();
+
+  if (branch.publishAt) {
+    const publishDate = parseLocalDate(branch.publishAt);
+    if (publishDate && startOfLocalDay(publishDate).getTime() > today) {
+      return false;
+    }
+  }
+
+  if (branch.unpublishAt) {
+    const unpublishDate = parseLocalDate(branch.unpublishAt);
+    if (unpublishDate && startOfLocalDay(unpublishDate).getTime() <= today) {
+      return false;
+    }
+  }
+
+  return true;
 };
 
 export const branches: Branch[] = [
@@ -492,6 +504,7 @@ export const branches: Branch[] = [
     hours: "9:00 - 20:00",
     mapsUrl: "https://maps.app.goo.gl/fteD9eXMD7Yw2tyA8",
     city: "Hồ Chí Minh",
+    unpublishAt: "2026-11-05",
   },
   // {
   //   id: 35,
