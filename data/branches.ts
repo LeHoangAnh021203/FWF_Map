@@ -627,6 +627,37 @@ export const branches: Branch[] = [
     publishAt: "2026-09-25",
   },
 
+  {
+    id: 57,
+    name: "Face Wash Fox - Cao Thắng",
+    address:
+      "344, Cao Thắng, P. Hòa Hưng, Tp.HCM.",
+    phone: "0889 866 666",
+    services: ["Tư vấn", "Rửa mặt", "Mỹ phẩm"],
+    lat: 10.775088038265453, 
+    lng: 106.67405809381648,
+    hours: "10:00 - 20:00",
+    mapsUrl:
+      "https://maps.app.goo.gl/DNveHSUHjRnFEKAk7",
+    city: "Hồ Chí Minh",
+    
+  },
+
+  {
+    id: 58,
+    name: "Face Wash Fox - Aeon Mall Bình Tân Premium",
+    address:
+      "Tầng B2 - 72 Lê Thánh Tôn, P.Sài Gòn, Tp.HCM.",
+    phone: "0889 866 666",
+    services: ["Tư vấn", "Rửa mặt", "Mỹ phẩm"],
+    lat: 10.7427958,
+    lng: 106.6119311,
+    hours: "10:00 - 20:00",
+    mapsUrl: "https://maps.app.goo.gl/vkEivdubPZWXmpbT7",
+    city: "Hồ Chí Minh",
+    publishAt: "2026-10-31",
+  },
+
   // Đà Nẵng - 1 Chi Nhánh
   {
     id: 41,
