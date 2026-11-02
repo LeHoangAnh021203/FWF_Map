@@ -160,7 +160,7 @@ export const branches: Branch[] = [
     services: ["Tư vấn", "Rửa mặt", "Mỹ phẩm"],
     lat: 21.0523645,
     lng: 105.7926943,
-    hours: "10:00 - 22:00",
+    hours: "11:00 - 19:00",
     mapsUrl: "https://maps.app.goo.gl/W7JgY594TGUY2kUZ7",
     city: "Hà Nội",
   },
