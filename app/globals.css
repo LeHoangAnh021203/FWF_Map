@@ -172,6 +172,37 @@ body {
   height: 34px;
   object-fit: contain;
 }
+
+.leaflet-div-icon.fox-marker--labeled {
+  width: auto !important;
+  height: auto !important;
+  overflow: visible !important;
+  background: transparent !important;
+  border: none !important;
+}
+
+.fox-marker--labeled::before {
+  top: 20px;
+}
+
+.fox-marker__stack {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.fox-marker__label {
+  margin-top: 2px;
+  padding: 1px 6px;
+  border-radius: 999px;
+  background: #fff;
+  color: #c2410c;
+  font-size: 10px;
+  font-weight: 700;
+  line-height: 14px;
+  white-space: nowrap;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.18);
+}
 /* Hide Leaflet / VietMap attribution bar */
 .leaflet-control-attribution {
   display: none !important;

@@ -660,7 +660,7 @@ export const branches: Branch[] = [
     id: 58,
     name: "Face Wash Fox - Aeon Mall Bình Tân Premium",
     address:
-      "Tầng B2 - 72 Lê Thánh Tôn, P.Sài Gòn, Tp.HCM.",
+      "Tầng trệt, Aeon Mall Bình Tân, 1 Đ. Số 17A, Bình Trị Đông B, Bình Tân",
     phone: "0889 866 666",
     services: ["Tư vấn", "Rửa mặt", "Mỹ phẩm"],
     lat: 10.7427958,

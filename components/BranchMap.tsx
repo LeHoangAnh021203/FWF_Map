@@ -63,6 +63,40 @@ const getBranchHoursLabel = (branch: Branch) => {
   return `Thứ 2 - Thứ 6: ${HANOI_CENTRE_WEEKDAY_HOURS}; Thứ 7 - CN: ${HANOI_CENTRE_WEEKEND_HOURS}`;
 };
 
+const shortMapLabel = (name: string) => {
+  if (/premium/i.test(name)) return "Premium";
+  return name
+    .replace(/^Face Wash Fox\s*-\s*/i, "")
+    .replace(/^AEON MALL\s*/i, "")
+    .trim();
+};
+
+const getColocatedMarkerLayout = (list: Branch[]) => {
+  const groups = new Map<string, Branch[]>();
+  list.forEach((branch) => {
+    const key = `${branch.lat.toFixed(5)},${branch.lng.toFixed(5)}`;
+    const group = groups.get(key) ?? [];
+    group.push(branch);
+    groups.set(key, group);
+  });
+
+  const layout = new Map<number, { lat: number; lng: number; label?: string }>();
+  groups.forEach((group) => {
+    if (group.length < 2) return;
+    const sorted = [...group].sort((a, b) => a.id - b.id);
+    const spread = 0.00022;
+    const start = -((sorted.length - 1) * spread) / 2;
+    sorted.forEach((branch, index) => {
+      layout.set(branch.id, {
+        lat: branch.lat,
+        lng: branch.lng + start + index * spread,
+        label: shortMapLabel(branch.name),
+      });
+    });
+  });
+  return layout;
+};
+
 
 const cities = [
   "Tất cả",
@@ -280,27 +314,46 @@ export default function BranchMap() {
     }
   }, []);
 
-  const createFoxIcon = useCallback((L: typeof import("leaflet")) => {
-    return L.divIcon({
-      html: `
-        <div style="
-          width: 40px;
-          height: 40px;
-          border-radius: 50%;
-          box-shadow: 0 4px 8px rgba(0,0,0,0.2);
-          background: white;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-        ">
-          <img src="/logo.png" alt="Face Wash Fox" style="width: 34px; height: 34px; object-fit: contain;" />
-        </div>
-      `,
-      className: "fox-marker",
-      iconSize: [40, 40],
-      iconAnchor: [20, 20],
-    });
-  }, []);
+  const createFoxIcon = useCallback(
+    (L: typeof import("leaflet"), label?: string) => {
+      if (!label) {
+        return L.divIcon({
+          html: `
+            <div style="
+              width: 40px;
+              height: 40px;
+              border-radius: 50%;
+              box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+              background: white;
+              display: flex;
+              align-items: center;
+              justify-content: center;
+            ">
+              <img src="/logo.png" alt="Face Wash Fox" style="width: 34px; height: 34px; object-fit: contain;" />
+            </div>
+          `,
+          className: "fox-marker",
+          iconSize: [40, 40],
+          iconAnchor: [20, 20],
+        });
+      }
+
+      return L.divIcon({
+        html: `
+          <div class="fox-marker__stack">
+            <div class="fox-marker__inner">
+              <img src="/logo.png" alt="Face Wash Fox" />
+            </div>
+            <span class="fox-marker__label">${label}</span>
+          </div>
+        `,
+        className: "fox-marker fox-marker--labeled",
+        iconSize: [88, 58],
+        iconAnchor: [44, 20],
+      });
+    },
+    []
+  );
 
   const updateMarkers = useCallback(
     async (branches: Branch[]) => {
@@ -317,13 +370,19 @@ export default function BranchMap() {
         }
       }
 
+      const markerLayout = getColocatedMarkerLayout(branches);
+
       branches.forEach((branch) => {
         const id = branch.id.toString();
+        const layout = markerLayout.get(branch.id);
+        const lat = layout?.lat ?? branch.lat;
+        const lng = layout?.lng ?? branch.lng;
         let marker = markers.get(id);
 
         if (!marker) {
-          marker = L.marker([branch.lat, branch.lng], {
-            icon: createFoxIcon(L),
+          marker = L.marker([lat, lng], {
+            icon: createFoxIcon(L, layout?.label),
+            zIndexOffset: layout?.label ? 200 : 0,
           });
 
           marker.on("click", () => {
@@ -380,12 +439,16 @@ export default function BranchMap() {
             </div>
           `;
             popup
-              ?.setLatLng([branch.lat, branch.lng])
+              ?.setLatLng([lat, lng])
               .setContent(content)
               .openOn(map);
           });
 
           markers.set(id, marker);
+        } else if (layout) {
+          marker.setLatLng([lat, lng]);
+          marker.setIcon(createFoxIcon(L, layout.label));
+          marker.setZIndexOffset(200);
         }
 
         marker.addTo(map);
