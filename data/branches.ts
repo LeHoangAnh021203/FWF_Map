@@ -163,6 +163,7 @@ export const branches: Branch[] = [
     hours: "11:00 - 19:00",
     mapsUrl: "https://maps.app.goo.gl/W7JgY594TGUY2kUZ7",
     city: "Hà Nội",
+    unpublishAt: "2026-12-06",
   },
  
   {
