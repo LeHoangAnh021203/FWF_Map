@@ -1258,7 +1258,7 @@ export default function BranchMap() {
         >
           <div className="fixed inset-0 bg-slate-900/50 backdrop-blur-[2px]" />
           <div
-            className="relative z-[9999] w-full max-w-xl overflow-hidden rounded-3xl border border-white/70 bg-white shadow-[0_24px_60px_-20px_rgba(234,88,12,0.45)]"
+            className="relative z-[9999] w-full max-w-3xl overflow-hidden rounded-3xl border border-white/70 bg-white shadow-[0_24px_60px_-20px_rgba(234,88,12,0.45)]"
             onClick={(e) => e.stopPropagation()}
           >
             <div className="bg-gradient-to-r from-orange-500 to-red-500 px-4 py-3 text-white">
@@ -1275,9 +1275,9 @@ export default function BranchMap() {
                     <DialogTitle className="text-base text-white">
                       Đặt lịch hẹn
                     </DialogTitle>
-                    <p className="mt-0.5 flex items-center gap-1 truncate text-xs text-orange-50">
-                      <MapPin className="h-3 w-3 shrink-0" />
-                      <span className="truncate">{selectedBranch.name}</span>
+                    <p className="mt-0.5 flex items-start gap-1 text-xs leading-4 text-orange-50">
+                      <MapPin className="mt-0.5 h-3 w-3 shrink-0" />
+                      <span>{selectedBranch.name}</span>
                     </p>
                   </div>
                 </div>
@@ -1696,7 +1696,12 @@ function BookingForm({
         )}
       </div>
 
-      <div className="grid grid-cols-2 gap-2.5 rounded-2xl border border-orange-100 bg-white p-2.5 shadow-sm shadow-orange-100/60 sm:grid-cols-3">
+      <div className="space-y-2 rounded-2xl border border-orange-100 bg-white p-2.5 shadow-sm shadow-orange-100/60">
+        <p className="text-[11px] leading-4 text-slate-500">
+          Giờ hoạt động:{" "}
+          {selectedDate ? bookingHours : getBranchHoursLabel(branch)}
+        </p>
+        <div className="grid grid-cols-2 gap-2.5 sm:grid-cols-3">
         <div>
           <label className={labelClass}>
             Ngày hẹn
@@ -1713,12 +1718,7 @@ function BookingForm({
           />
         </div>
         <div>
-          <label className="mb-1 flex items-baseline justify-between gap-1 text-xs font-medium text-slate-600">
-            <span>Giờ hẹn</span>
-            <span className="truncate font-normal text-[11px] text-slate-400">
-              {selectedDate ? bookingHours : getBranchHoursLabel(branch)}
-            </span>
-          </label>
+          <label className={labelClass}>Giờ hẹn</label>
           <select
             value={selectedTime}
             onChange={(e) => setSelectedTime(e.target.value)}
@@ -1748,6 +1748,7 @@ function BookingForm({
               </option>
             ))}
           </select>
+        </div>
         </div>
       </div>
 
