@@ -41,31 +41,6 @@ const FACEBOOK_PAGE_URL = "https://www.facebook.com/facewashfox";
 const HOTLINE_DISPLAY = "0889 866 666";
 const HOTLINE_TEL = "0889866666";
 
-const facebookActionButtonHtml = (size: "sm" | "md" = "md") => {
-  const fontSize = size === "sm" ? "11px" : "12px";
-  const iconSize = size === "sm" ? 14 : 16;
-  return `
-    <a href="${FACEBOOK_PAGE_URL}" target="_blank" rel="noopener noreferrer" title="Facebook Face Wash Fox" style="
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      width: 36px;
-      flex-shrink: 0;
-      background: #1877F2;
-      color: white;
-      border: none;
-      border-radius: 6px;
-      cursor: pointer;
-      text-decoration: none;
-      font-size: ${fontSize};
-    ">
-      <svg width="${iconSize}" height="${iconSize}" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-        <path d="M22 12.07C22 6.48 17.52 2 11.93 2S1.86 6.48 1.86 12.07c0 5.02 3.66 9.18 8.44 9.93v-7.03H7.9v-2.9h2.4V9.41c0-2.37 1.4-3.69 3.56-3.69 1.03 0 2.12.19 2.12.19v2.33h-1.2c-1.18 0-1.55.73-1.55 1.48v1.78h2.64l-.42 2.9h-2.22V22c4.78-.75 8.44-4.91 8.44-9.93z"/>
-      </svg>
-    </a>
-  `;
-};
-
 const parseLocalDate = (dateString: string) => {
   const [year, month, day] = dateString.split("-").map(Number);
   if (!year || !month || !day) return null;
@@ -464,7 +439,6 @@ export default function BranchMap() {
                 ">
                   🗺️ Chỉ đường
                 </button>
-                ${facebookActionButtonHtml("md")}
               </div>
             </div>
           `;
@@ -885,7 +859,6 @@ export default function BranchMap() {
           ">
             🗺️ Chỉ đường
           </button>
-          ${facebookActionButtonHtml("sm")}
         </div>
       </div>
     `;
