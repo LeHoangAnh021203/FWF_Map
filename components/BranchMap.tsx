@@ -111,6 +111,39 @@ const cities = [
   "Nha Trang",
   "Hải Phòng"
 ];
+
+const CITY_MATCH_RADIUS_KM = 80;
+
+const distanceKm = (
+  lat1: number,
+  lng1: number,
+  lat2: number,
+  lng2: number
+) => {
+  const toRad = (deg: number) => (deg * Math.PI) / 180;
+  const dLat = toRad(lat2 - lat1);
+  const dLng = toRad(lng2 - lng1);
+  const a =
+    Math.sin(dLat / 2) ** 2 +
+    Math.cos(toRad(lat1)) *
+      Math.cos(toRad(lat2)) *
+      Math.sin(dLng / 2) ** 2;
+  return 6371 * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+};
+
+const cityForCoordinates = (lat: number, lng: number, list: Branch[]) => {
+  let nearest: { city: string; distance: number } | null = null;
+
+  for (const branch of list) {
+    const distance = distanceKm(lat, lng, branch.lat, branch.lng);
+    if (!nearest || distance < nearest.distance) {
+      nearest = { city: branch.city, distance };
+    }
+  }
+
+  if (!nearest || nearest.distance > CITY_MATCH_RADIUS_KM) return null;
+  return nearest.city;
+};
 const branchTypes = ["Tất cả", "Chính", "Phụ"];
 const serviceTypes = ["Tư vấn", "Rửa mặt", "Mỹ phẩm"];
 
@@ -729,6 +762,12 @@ export default function BranchMap() {
           const { latitude, longitude } = position.coords;
 
           setUserLocation({ lat: latitude, lng: longitude });
+          const matchedCity = cityForCoordinates(
+            latitude,
+            longitude,
+            publishedBranches
+          );
+          if (matchedCity) setSelectedCity(matchedCity);
 
           if (mapInstanceRef.current) {
             const { map } = mapInstanceRef.current;
@@ -790,7 +829,7 @@ export default function BranchMap() {
       {
         enableHighAccuracy: true,
         timeout: 10000,
-        maximumAge: 60000,
+        maximumAge: 0,
       }
     );
   };
