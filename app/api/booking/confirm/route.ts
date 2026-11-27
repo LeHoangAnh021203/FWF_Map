@@ -103,13 +103,14 @@ export async function POST(request: Request) {
       );
     }
 
-    // Validate phone number (Vietnamese format)
-    const phoneRegex = /^(0[3|5|7|8|9])[0-9]{8}$/;
-    if (customerPhone && !phoneRegex.test(customerPhone)) {
+    // Validate phone: VN mobile only (0[35789]xxxxxxxx)
+    const vnPhoneRegex = /^(0[35789])[0-9]{8}$/;
+    if (customerPhone && !vnPhoneRegex.test(customerPhone)) {
       return NextResponse.json(
-        { 
-          success: false, 
-          error: "Số điện thoại không đúng định dạng Việt Nam (10 số, bắt đầu bằng 03/05/07/08/09)" 
+        {
+          success: false,
+          error:
+            "Số điện thoại không hợp lệ. Vui lòng dùng số Việt Nam 10 số, bắt đầu bằng 03/05/07/08/09.",
         },
         { status: 400 }
       );

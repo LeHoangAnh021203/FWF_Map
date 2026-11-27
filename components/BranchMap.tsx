@@ -2,6 +2,7 @@
 
 import type React from "react";
 import { useState, useEffect, useRef, useCallback, useMemo } from "react";
+import { createPortal } from "react-dom";
 import {
   Search,
   MapPin,
@@ -36,6 +37,34 @@ interface MapInstance {
 const HANOI_CENTRE_BRANCH_ID = 3;
 const HANOI_CENTRE_WEEKDAY_HOURS = "10:00 - 21:30";
 const HANOI_CENTRE_WEEKEND_HOURS = "10:00 - 22:00";
+const FACEBOOK_PAGE_URL = "https://www.facebook.com/facewashfox";
+const HOTLINE_DISPLAY = "0889 866 666";
+const HOTLINE_TEL = "0889866666";
+
+const facebookActionButtonHtml = (size: "sm" | "md" = "md") => {
+  const fontSize = size === "sm" ? "11px" : "12px";
+  const iconSize = size === "sm" ? 14 : 16;
+  return `
+    <a href="${FACEBOOK_PAGE_URL}" target="_blank" rel="noopener noreferrer" title="Facebook Face Wash Fox" style="
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 36px;
+      flex-shrink: 0;
+      background: #1877F2;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      text-decoration: none;
+      font-size: ${fontSize};
+    ">
+      <svg width="${iconSize}" height="${iconSize}" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+        <path d="M22 12.07C22 6.48 17.52 2 11.93 2S1.86 6.48 1.86 12.07c0 5.02 3.66 9.18 8.44 9.93v-7.03H7.9v-2.9h2.4V9.41c0-2.37 1.4-3.69 3.56-3.69 1.03 0 2.12.19 2.12.19v2.33h-1.2c-1.18 0-1.55.73-1.55 1.48v1.78h2.64l-.42 2.9h-2.22V22c4.78-.75 8.44-4.91 8.44-9.93z"/>
+      </svg>
+    </a>
+  `;
+};
 
 const parseLocalDate = (dateString: string) => {
   const [year, month, day] = dateString.split("-").map(Number);
@@ -408,7 +437,7 @@ export default function BranchMap() {
                 )
                 .join("")}
               </div>
-              <div style="display: flex; gap: 8px; margin-top: 8px;">
+              <div style="display: flex; gap: 8px; margin-top: 8px; align-items: stretch;">
                 <button onclick="window.openBooking(${branch.id})" style="
                   flex: 1;
                   background: #f97316; 
@@ -435,6 +464,7 @@ export default function BranchMap() {
                 ">
                   🗺️ Chỉ đường
                 </button>
+                ${facebookActionButtonHtml("md")}
               </div>
             </div>
           `;
@@ -828,7 +858,7 @@ export default function BranchMap() {
         )
         .join("")}
         </div>
-        <div style="display: flex; gap: 8px; margin-top: 8px;">
+        <div style="display: flex; gap: 8px; margin-top: 8px; align-items: stretch;">
           <button onclick="window.openBooking(${branch.id})" style="
             flex: 1;
             background: #f97316; 
@@ -855,6 +885,7 @@ export default function BranchMap() {
           ">
             🗺️ Chỉ đường
           </button>
+          ${facebookActionButtonHtml("sm")}
         </div>
       </div>
     `;
@@ -1293,6 +1324,30 @@ export default function BranchMap() {
   );
 }
 
+const PHONE_COUNTRY_OPTIONS = [
+  { code: "+84", label: "Việt Nam", flag: "🇻🇳", placeholder: "912 345 678" },
+  { code: "other", label: "Khác", flag: "🌐", placeholder: "912 345 678" },
+] as const;
+
+const VN_MOBILE_REGEX = /^(0?)(3|5|7|8|9)\d{8}$/;
+
+const digitsOnly = (value: string) => value.replace(/\D/g, "");
+
+const normalizePhoneForSubmit = (localNumber: string) => {
+  const digits = digitsOnly(localNumber);
+  if (digits.startsWith("84") && digits.length >= 11) {
+    return `0${digits.slice(2)}`;
+  }
+  if (digits.startsWith("0")) return digits;
+  return `0${digits}`;
+};
+
+const isValidVnPhone = (localNumber: string) => {
+  const digits = digitsOnly(localNumber);
+  if (!digits) return false;
+  return VN_MOBILE_REGEX.test(digits);
+};
+
 function BookingForm({
   branch,
   onClose,
@@ -1305,10 +1360,34 @@ function BookingForm({
   const [selectedCustomer, setSelectedCustomer] = useState("");
   const [selectedService, setSelectedService] = useState("");
   const [customerName, setCustomerName] = useState("");
+  const [phoneCountryCode, setPhoneCountryCode] = useState("+84");
   const [customerPhone, setCustomerPhone] = useState("");
+  const [phoneTouched, setPhoneTouched] = useState(false);
   const [customerEmail, setCustomerEmail] = useState("");
   const [customerNote, setCustomerNote] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [showNonVnPhoneNotice, setShowNonVnPhoneNotice] = useState(false);
+  const [isClient, setIsClient] = useState(false);
+
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
+
+  const selectedPhoneCountry =
+    PHONE_COUNTRY_OPTIONS.find((item) => item.code === phoneCountryCode) ??
+    PHONE_COUNTRY_OPTIONS[0];
+  const phoneIsValid = isValidVnPhone(customerPhone);
+  const showPhoneError = phoneTouched && customerPhone.length > 0 && !phoneIsValid;
+
+  const handlePhoneCountryChange = (value: string) => {
+    if (value === "other") {
+      setShowNonVnPhoneNotice(true);
+      setPhoneCountryCode("+84");
+      return;
+    }
+    setPhoneCountryCode(value);
+    setPhoneTouched(false);
+  };
 
   // Tạo time slots dựa trên giờ hoạt động của từng chi nhánh
   const generateTimeSlots = (hours: string) => {
@@ -1450,6 +1529,17 @@ function BookingForm({
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setPhoneTouched(true);
+
+    if (!isValidVnPhone(customerPhone)) {
+      alert(
+        "Vui lòng nhập số điện thoại Việt Nam hợp lệ (10 số, bắt đầu bằng 03/05/07/08/09)."
+      );
+      return;
+    }
+
+    const normalizedPhone = normalizePhoneForSubmit(customerPhone);
+
     setIsSubmitting(true);
 
     try {
@@ -1462,7 +1552,7 @@ function BookingForm({
         body: JSON.stringify({
           customerName,
           customerEmail: customerEmail || undefined,
-          customerPhone,
+          customerPhone: normalizedPhone,
           service: selectedService || "Dịch vụ chăm sóc da",
           branchName: branch.name,
           branchAddress: branch.address || "Chưa cung cấp",
@@ -1506,7 +1596,9 @@ function BookingForm({
     setSelectedCustomer("");
     setSelectedService("");
     setCustomerName("");
+    setPhoneCountryCode("+84");
     setCustomerPhone("");
+    setPhoneTouched(false);
     setCustomerEmail("");
     setCustomerNote("");
 
@@ -1533,17 +1625,59 @@ function BookingForm({
 
       <div>
         <label className="text-xs md:text-sm font-medium mb-1 md:mb-2 block">
-          Số điện thoại
+          Số điện thoại <span className="text-red-500">*</span>
         </label>
-        <Input
-          value={customerPhone}
-          onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-            setCustomerPhone(e.target.value)
-          }
-          placeholder="Nhập số điện thoại"
-          required
-          className="h-8 md:h-10 text-sm md:text-base"
-        />
+        <div
+          className={`flex overflow-hidden rounded-xl border bg-white shadow-sm transition focus-within:ring-2 focus-within:ring-orange-400 focus-within:ring-offset-1 ${
+            showPhoneError ? "border-red-400" : "border-orange-200"
+          }`}
+        >
+          <div className="relative flex items-center border-r border-orange-100 bg-orange-50">
+            <select
+              value={phoneCountryCode}
+              onChange={(e) => handlePhoneCountryChange(e.target.value)}
+              aria-label="Mã vùng điện thoại"
+              className="h-10 max-w-[128px] cursor-pointer appearance-none bg-transparent py-2 pl-2.5 pr-7 text-xs font-semibold text-slate-800 outline-none md:max-w-[148px] md:text-sm"
+            >
+              {PHONE_COUNTRY_OPTIONS.map((country) => (
+                <option key={country.code} value={country.code}>
+                  {country.code === "+84"
+                    ? `${country.flag} +84 VN`
+                    : `${country.flag} ${country.label}`}
+                </option>
+              ))}
+            </select>
+            <span className="pointer-events-none absolute right-2 text-[10px] text-slate-400">
+              ▾
+            </span>
+          </div>
+          <div className="flex min-w-0 flex-1 items-center gap-2 px-3">
+            <Phone className="h-4 w-4 flex-shrink-0 text-orange-500" />
+            <input
+              type="tel"
+              inputMode="numeric"
+              autoComplete="tel-national"
+              value={customerPhone}
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                const next = e.target.value.replace(/[^\d\s]/g, "");
+                setCustomerPhone(next);
+              }}
+              onBlur={() => setPhoneTouched(true)}
+              placeholder={selectedPhoneCountry.placeholder}
+              required
+              className="h-10 w-full min-w-0 bg-transparent text-sm outline-none placeholder:text-slate-400 md:text-base"
+            />
+          </div>
+        </div>
+        <p className="mt-1.5 text-[11px] text-slate-500 md:text-xs">
+          Định dạng Việt Nam: 10 số, bắt đầu bằng 03 / 05 / 07 / 08 / 09. Có thể
+          nhập 912… hoặc 0912…
+        </p>
+        {showPhoneError && (
+          <p className="mt-1 text-[11px] font-medium text-red-500 md:text-xs">
+            Số điện thoại Việt Nam chưa đúng định dạng.
+          </p>
+        )}
       </div>
 
       <div>
@@ -1645,6 +1779,109 @@ function BookingForm({
       >
         {isSubmitting ? "Đang xử lý..." : "Xác nhận đặt lịch"}
       </Button>
+
+      {isClient &&
+        showNonVnPhoneNotice &&
+        createPortal(
+          <div
+            className="fixed inset-0 z-[10050] flex items-center justify-center p-4"
+            onClick={() => setShowNonVnPhoneNotice(false)}
+          >
+            <div className="absolute inset-0 bg-black/60 backdrop-blur-[2px]" />
+            <div
+              role="dialog"
+              aria-modal="true"
+              aria-labelledby="non-vn-phone-title"
+              className="relative z-10 w-full max-w-md overflow-hidden rounded-2xl border border-orange-100 bg-white shadow-2xl"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <div className="bg-gradient-to-br from-orange-500 to-orange-600 px-5 py-4 text-white">
+                <div className="flex items-start justify-between gap-3">
+                  <div>
+                    <p className="text-[11px] font-medium uppercase tracking-wide text-orange-100">
+                      Face Wash Fox
+                    </p>
+                    <h3
+                      id="non-vn-phone-title"
+                      className="mt-1 text-lg font-semibold leading-snug"
+                    >
+                      Thông báo / Notice
+                    </h3>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={() => setShowNonVnPhoneNotice(false)}
+                    className="rounded-full bg-white/15 p-1.5 text-white transition hover:bg-white/25"
+                    aria-label="Đóng"
+                  >
+                    <X className="h-4 w-4" />
+                  </button>
+                </div>
+              </div>
+
+              <div className="space-y-4 px-5 py-5">
+                <div className="rounded-xl bg-orange-50/80 px-3.5 py-3">
+                  <p className="mb-1.5 text-[11px] font-semibold uppercase tracking-wide text-orange-600">
+                    Tiếng Việt
+                  </p>
+                  <p className="text-sm leading-relaxed text-slate-700">
+                    Đội ngũ chăm sóc khách hàng Face Wash Fox chỉ có thể chủ
+                    động liên lạc với bạn khi số điện thoại là số Việt Nam.
+                    Trường hợp khác, vui lòng liên hệ qua Fanpage để được hỗ
+                    trợ nhanh nhất hoặc qua Hotline.
+                  </p>
+                </div>
+
+                <div className="rounded-xl bg-slate-50 px-3.5 py-3">
+                  <p className="mb-1.5 text-[11px] font-semibold uppercase tracking-wide text-slate-500">
+                    English
+                  </p>
+                  <p className="text-sm leading-relaxed text-slate-700">
+                    Face Wash Fox customer care can only proactively contact you
+                    if your phone number is a Vietnamese number. Otherwise,
+                    please contact us via our Fanpage for the fastest support,
+                    or call our Hotline.
+                  </p>
+                </div>
+
+                <div className="grid grid-cols-1 gap-2.5 sm:grid-cols-2">
+                  <a
+                    href={FACEBOOK_PAGE_URL}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex h-11 items-center justify-center gap-2 rounded-xl bg-[#1877F2] px-4 text-sm font-semibold text-white shadow-sm transition hover:bg-[#166fe5] hover:shadow-md"
+                  >
+                    <svg
+                      className="h-4 w-4"
+                      viewBox="0 0 24 24"
+                      fill="currentColor"
+                      aria-hidden="true"
+                    >
+                      <path d="M22 12.07C22 6.48 17.52 2 11.93 2S1.86 6.48 1.86 12.07c0 5.02 3.66 9.18 8.44 9.93v-7.03H7.9v-2.9h2.4V9.41c0-2.37 1.4-3.69 3.56-3.69 1.03 0 2.12.19 2.12.19v2.33h-1.2c-1.18 0-1.55.73-1.55 1.48v1.78h2.64l-.42 2.9h-2.22V22c4.78-.75 8.44-4.91 8.44-9.93z" />
+                    </svg>
+                    Fanpage
+                  </a>
+                  <a
+                    href={`tel:${HOTLINE_TEL}`}
+                    className="inline-flex h-11 items-center justify-center gap-2 rounded-xl bg-orange-500 px-4 text-sm font-semibold text-white shadow-sm transition hover:bg-orange-600 hover:shadow-md"
+                  >
+                    <Phone className="h-4 w-4" />
+                    {HOTLINE_DISPLAY}
+                  </a>
+                </div>
+
+                <button
+                  type="button"
+                  onClick={() => setShowNonVnPhoneNotice(false)}
+                  className="w-full rounded-xl border border-slate-200 bg-white px-4 py-2.5 text-sm font-medium text-slate-600 transition hover:bg-slate-50"
+                >
+                  Đã hiểu / Got it
+                </button>
+              </div>
+            </div>
+          </div>,
+          document.body
+        )}
     </form>
   );
 }
