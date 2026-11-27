@@ -172,7 +172,7 @@ const Sidebar: React.FC<SidebarProps> = ({
   const [selectedVehicle, setSelectedVehicle] = useState<string>("car");
   const [originCoords, setOriginCoords] = useState<{ lat: number; lng: number; label?: string } | null>(null);
   const [mobileSheetState, setMobileSheetState] = useState<"collapsed" | "mid" | "expanded">("mid");
-  const [isDirectionsOpen, setIsDirectionsOpen] = useState(!isMobile);
+  const [isDirectionsOpen, setIsDirectionsOpen] = useState(false);
 
   const vietmapApiKey = process.env.NEXT_PUBLIC_VIETMAP_API_KEY;
 
@@ -490,6 +490,7 @@ const Sidebar: React.FC<SidebarProps> = ({
 
   const requestDirectionsForBranch = useCallback(
     async (branch: SidebarBranch, options?: { silent?: boolean }) => {
+      setIsDirectionsOpen(true);
       setDirectionToId(String(branch.id));
 
       if (!userLocation) {
@@ -512,7 +513,7 @@ const Sidebar: React.FC<SidebarProps> = ({
       e.stopPropagation();
       void requestDirectionsForBranch(branch);
       if (isMobile) {
-        setMobileSheetState("collapsed");
+        setMobileSheetState("mid");
       }
     },
     [requestDirectionsForBranch, isMobile]
@@ -527,6 +528,7 @@ const Sidebar: React.FC<SidebarProps> = ({
       const branch = branchOptions.find((b) => b.id === branchId);
       if (!branch) return;
       setShowSidebar(true);
+      setIsDirectionsOpen(true);
       void requestDirectionsForBranch(branch, { silent: true });
     };
 
@@ -603,9 +605,6 @@ const Sidebar: React.FC<SidebarProps> = ({
     }
   }, [isMobile, showSidebar]);
 
-  useEffect(() => {
-    setIsDirectionsOpen(!isMobile);
-  }, [isMobile]);
   const handleDragStart = (event: React.TouchEvent | React.MouseEvent) => {
     if (!isMobile) return;
     const clientY = "touches" in event ? event.touches[0].clientY : (event as React.MouseEvent).clientY;
@@ -751,32 +750,71 @@ const Sidebar: React.FC<SidebarProps> = ({
             </div>
           </div>
 
-          <div className={`${isMobile ? "px-4 py-4 border-b" : "p-3 md:p-4 border-b"}`}>
-            <div className="flex items-center justify-between">
-              <div className="text-xs md:text-sm font-semibold text-gray-700">Chỉ đường Face Wash Fox</div>
-              <div className="flex items-center gap-2">
-                <button
-                  type="button"
-                  onClick={swapDirectionPoints}
-                  disabled={!canSwapDirections}
-                  className="rounded-full border border-gray-200 p-1.5 text-gray-500 hover:bg-gray-100 disabled:opacity-40"
-                  title="Đổi vị trí"
-                >
-                  ⇅
-                </button>
+          <div className={`${isMobile ? "px-4 py-3 border-b" : "p-3 md:p-4 border-b"}`}>
+            <div
+              className={`rounded-2xl border transition-all ${
+                isDirectionsOpen
+                  ? "border-orange-200 bg-orange-50/70 p-3 shadow-sm"
+                  : "border-orange-300 bg-gradient-to-r from-orange-500 to-red-500 p-3 shadow-md hover:shadow-lg hover:brightness-[1.03]"
+              }`}
+            >
+              <div className="flex items-center justify-between gap-2">
                 <button
                   type="button"
                   onClick={() => setIsDirectionsOpen((prev) => !prev)}
-                  className="rounded-full border border-gray-200 p-1.5 text-gray-500 hover:bg-gray-100"
-                  title={isDirectionsOpen ? "Thu gọn" : "Mở rộng"}
+                  className={`flex min-w-0 flex-1 items-center gap-2.5 text-left ${
+                    isDirectionsOpen ? "text-orange-800" : "text-white"
+                  }`}
                 >
-                  {isDirectionsOpen ? <ChevronUp className="h-4 w-4" /> : <ChevronDown className="h-4 w-4" />}
+                  <span
+                    className={`flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-full ${
+                      isDirectionsOpen
+                        ? "bg-orange-500 text-white"
+                        : "bg-white/20 text-white ring-1 ring-white/40"
+                    }`}
+                  >
+                    <Route className="h-4 w-4" />
+                  </span>
+                  <span className="min-w-0">
+                    <span className="block text-sm font-bold leading-tight md:text-[15px]">
+                      Chỉ đường Face Wash Fox
+                    </span>
+                    {!isDirectionsOpen && (
+                      <span className="mt-0.5 block text-[11px] font-medium text-orange-50/95 md:text-xs">
+                        Bấm để mở chỉ đường tới chi nhánh
+                      </span>
+                    )}
+                  </span>
                 </button>
+                <div className="flex flex-shrink-0 items-center gap-2">
+                  {isDirectionsOpen && (
+                    <button
+                      type="button"
+                      onClick={swapDirectionPoints}
+                      disabled={!canSwapDirections}
+                      className="rounded-full border border-orange-200 bg-white p-1.5 text-orange-600 hover:bg-orange-100 disabled:opacity-40"
+                      title="Đổi vị trí"
+                    >
+                      ⇅
+                    </button>
+                  )}
+                  <button
+                    type="button"
+                    onClick={() => setIsDirectionsOpen((prev) => !prev)}
+                    className={`rounded-full p-1.5 ${
+                      isDirectionsOpen
+                        ? "border border-orange-200 bg-white text-orange-600 hover:bg-orange-100"
+                        : "bg-white text-orange-600 shadow-sm hover:bg-orange-50"
+                    }`}
+                    title={isDirectionsOpen ? "Thu gọn" : "Mở rộng"}
+                  >
+                    {isDirectionsOpen ? <ChevronUp className="h-4 w-4" /> : <ChevronDown className="h-4 w-4" />}
+                  </button>
+                </div>
               </div>
-            </div>
 
             {isDirectionsOpen && (
-              <div className={`${isMobile ? "space-y-4 pt-3" : "space-y-3 pt-2"}`}>
+              <div className={`${isMobile ? "space-y-4 pt-3" : "space-y-3 pt-3"}`}>
                 <div className="flex items-center justify-between gap-1 bg-gray-50 rounded-full px-2 py-1">
                   {vehicleOptions.map((vehicle) => (
                     <button
@@ -923,6 +961,7 @@ const Sidebar: React.FC<SidebarProps> = ({
                 {durationLabel && <p>Thời gian dự kiến: {durationLabel}</p>}
               </div>
             )}
+            </div>
           </div>
 
           <div className={listWrapperClasses}>
