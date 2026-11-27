@@ -258,6 +258,7 @@ export const branches: Branch[] = [
     hours: "10:00 - 22:00",
     mapsUrl: "https://maps.app.goo.gl/7KeLn2NoeZSXsj2v9",
     city: "Hồ Chí Minh",
+    unpublishAt: "2026-12-03",
   },
   {
     id: 14,
@@ -582,6 +583,7 @@ export const branches: Branch[] = [
     hours: "9:30 - 21:30",
     mapsUrl: "https://maps.app.goo.gl/3Ww3UPTfdpGNhcb37",
     city: "Hồ Chí Minh",
+    unpublishAt: "2026-11-30",
   },
 
   {
