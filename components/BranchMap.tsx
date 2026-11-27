@@ -1283,40 +1283,53 @@ export default function BranchMap() {
             window.location.hash = "";
           }}
         >
-          <div className="fixed inset-0 bg-black/80" />
+          <div className="fixed inset-0 bg-slate-900/50 backdrop-blur-[2px]" />
           <div
-            className="fixed left-[50%] top-[50%] z-[9999] grid w-full max-w-md translate-x-[-50%] translate-y-[-50%] gap-4 border bg-white p-4 md:p-6 shadow-lg duration-200 sm:rounded-lg max-h-[90vh] overflow-y-auto"
+            className="relative z-[9999] w-full max-w-xl overflow-hidden rounded-3xl border border-white/70 bg-white shadow-[0_24px_60px_-20px_rgba(234,88,12,0.45)]"
             onClick={(e) => e.stopPropagation()}
           >
-            <DialogHeader>
-              <DialogTitle className="flex items-center gap-2 text-base md:text-lg">
-                <Calendar className="h-4 w-4 md:h-5 md:w-5 text-orange-500" />
-                Đặt lịch hẹn
-              </DialogTitle>
-              <div className="text-xs md:text-sm text-gray-600">
-                Chi nhánh:{" "}
-                <span className="font-medium">{selectedBranch.name}</span>
+            <div className="bg-gradient-to-r from-orange-500 to-red-500 px-4 py-3 text-white">
+              <div className="flex items-center justify-between gap-3">
+                <div className="flex min-w-0 items-center gap-2.5">
+                  <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-white shadow-sm">
+                    <img
+                      src="/logo.png"
+                      alt=""
+                      className="h-7 w-7 object-contain"
+                    />
+                  </div>
+                  <div className="min-w-0">
+                    <DialogTitle className="text-base text-white">
+                      Đặt lịch hẹn
+                    </DialogTitle>
+                    <p className="mt-0.5 flex items-center gap-1 truncate text-xs text-orange-50">
+                      <MapPin className="h-3 w-3 shrink-0" />
+                      <span className="truncate">{selectedBranch.name}</span>
+                    </p>
+                  </div>
+                </div>
+                <button
+                  type="button"
+                  onClick={() => {
+                    setShowBookingForm(false);
+                    window.location.hash = "";
+                  }}
+                  className="rounded-full bg-white/15 p-1.5 text-white transition hover:bg-white/25"
+                  aria-label="Đóng"
+                >
+                  <X className="h-4 w-4" />
+                </button>
               </div>
-            </DialogHeader>
-            <BookingForm
-              branch={selectedBranch}
-              onClose={() => {
-                setShowBookingForm(false);
-                // Clear URL hash when closing booking form
-                window.location.hash = "";
-              }}
-            />
-            <button
-              onClick={() => {
-                setShowBookingForm(false);
-                // Clear URL hash when closing booking form
-                window.location.hash = "";
-              }}
-              className="absolute right-4 top-4 rounded-sm opacity-70 transition-opacity hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-offset-2"
-            >
-              <X className="h-4 w-4" />
-              <span className="sr-only">Close</span>
-            </button>
+            </div>
+            <div className="bg-gradient-to-b from-orange-50/80 to-white px-4 py-3">
+              <BookingForm
+                branch={selectedBranch}
+                onClose={() => {
+                  setShowBookingForm(false);
+                  window.location.hash = "";
+                }}
+              />
+            </div>
           </div>
         </div>
       )}
@@ -1348,6 +1361,19 @@ const isValidVnPhone = (localNumber: string) => {
   return VN_MOBILE_REGEX.test(digits);
 };
 
+const isInvalidVnPhoneFormat = (localNumber: string) => {
+  const digits = digitsOnly(localNumber);
+  if (!digits || isValidVnPhone(digits)) return false;
+
+  if (digits.startsWith("0")) {
+    if (digits.length > 10) return true;
+    return digits.length >= 2 && !/^0[35789]/.test(digits);
+  }
+
+  if (digits.length > 9) return true;
+  return !/^[35789]/.test(digits);
+};
+
 function BookingForm({
   branch,
   onClose,
@@ -1362,7 +1388,6 @@ function BookingForm({
   const [customerName, setCustomerName] = useState("");
   const [phoneCountryCode, setPhoneCountryCode] = useState("+84");
   const [customerPhone, setCustomerPhone] = useState("");
-  const [phoneTouched, setPhoneTouched] = useState(false);
   const [customerEmail, setCustomerEmail] = useState("");
   const [customerNote, setCustomerNote] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -1376,8 +1401,7 @@ function BookingForm({
   const selectedPhoneCountry =
     PHONE_COUNTRY_OPTIONS.find((item) => item.code === phoneCountryCode) ??
     PHONE_COUNTRY_OPTIONS[0];
-  const phoneIsValid = isValidVnPhone(customerPhone);
-  const showPhoneError = phoneTouched && customerPhone.length > 0 && !phoneIsValid;
+  const showPhoneError = isInvalidVnPhoneFormat(customerPhone);
 
   const handlePhoneCountryChange = (value: string) => {
     if (value === "other") {
@@ -1386,7 +1410,6 @@ function BookingForm({
       return;
     }
     setPhoneCountryCode(value);
-    setPhoneTouched(false);
   };
 
   // Tạo time slots dựa trên giờ hoạt động của từng chi nhánh
@@ -1529,7 +1552,6 @@ function BookingForm({
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setPhoneTouched(true);
 
     if (!isValidVnPhone(customerPhone)) {
       alert(
@@ -1598,7 +1620,6 @@ function BookingForm({
     setCustomerName("");
     setPhoneCountryCode("+84");
     setCustomerPhone("");
-    setPhoneTouched(false);
     setCustomerEmail("");
     setCustomerNote("");
 
@@ -1606,30 +1627,53 @@ function BookingForm({
     onClose();
   };
 
+  const fieldClass =
+    "h-10 rounded-xl border-orange-100 bg-white px-3 text-sm text-slate-800 shadow-sm shadow-orange-100/70 placeholder:text-slate-400 focus-visible:border-orange-300 focus-visible:ring-orange-400 focus-visible:ring-offset-0";
+  const selectClass =
+    "h-10 w-full rounded-xl border border-orange-100 bg-white px-3 text-sm text-slate-800 shadow-sm shadow-orange-100/70 outline-none transition focus:border-orange-300 focus:ring-2 focus:ring-orange-400/80";
+  const labelClass = "mb-1 block text-xs font-medium text-slate-600";
+
   return (
-    <form onSubmit={handleSubmit} className="space-y-3 md:space-y-4">
-      <div>
-        <label className="text-xs md:text-sm font-medium mb-1 md:mb-2 block">
-          Họ và tên
-        </label>
-        <Input
-          value={customerName}
-          onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-            setCustomerName(e.target.value)
-          }
-          placeholder="Nhập họ và tên"
-          required
-          className="h-8 md:h-10 text-sm md:text-base"
-        />
+    <form onSubmit={handleSubmit} className="space-y-2.5">
+      <div className="grid grid-cols-1 gap-2.5 sm:grid-cols-2">
+        <div>
+          <label className={labelClass}>
+            Họ và tên
+          </label>
+          <Input
+            value={customerName}
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+              setCustomerName(e.target.value)
+            }
+            placeholder="Nhập họ và tên"
+            required
+            className={fieldClass}
+          />
+        </div>
+        <div>
+          <label className={labelClass}>
+            Email{" "}
+            <span className="font-normal text-slate-400">(tùy chọn)</span>
+          </label>
+          <Input
+            type="email"
+            value={customerEmail}
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+              setCustomerEmail(e.target.value)
+            }
+            placeholder="Email nhận xác nhận"
+            className={fieldClass}
+          />
+        </div>
       </div>
 
       <div>
-        <label className="text-xs md:text-sm font-medium mb-1 md:mb-2 block">
+        <label className={labelClass}>
           Số điện thoại <span className="text-red-500">*</span>
         </label>
         <div
-          className={`flex overflow-hidden rounded-xl border bg-white shadow-sm transition focus-within:ring-2 focus-within:ring-orange-400 focus-within:ring-offset-1 ${
-            showPhoneError ? "border-red-400" : "border-orange-200"
+          className={`flex overflow-hidden rounded-xl border bg-white shadow-sm shadow-orange-100/70 transition focus-within:ring-2 focus-within:ring-orange-400/80 ${
+            showPhoneError ? "border-red-400" : "border-orange-100"
           }`}
         >
           <div className="relative flex items-center border-r border-orange-100 bg-orange-50">
@@ -1637,7 +1681,7 @@ function BookingForm({
               value={phoneCountryCode}
               onChange={(e) => handlePhoneCountryChange(e.target.value)}
               aria-label="Mã vùng điện thoại"
-              className="h-10 max-w-[128px] cursor-pointer appearance-none bg-transparent py-2 pl-2.5 pr-7 text-xs font-semibold text-slate-800 outline-none md:max-w-[148px] md:text-sm"
+              className="h-10 max-w-[118px] cursor-pointer appearance-none bg-transparent py-1 pl-2.5 pr-6 text-xs font-semibold text-slate-800 outline-none"
             >
               {PHONE_COUNTRY_OPTIONS.map((country) => (
                 <option key={country.code} value={country.code}>
@@ -1647,7 +1691,7 @@ function BookingForm({
                 </option>
               ))}
             </select>
-            <span className="pointer-events-none absolute right-2 text-[10px] text-slate-400">
+            <span className="pointer-events-none absolute right-1.5 text-[10px] text-slate-400">
               ▾
             </span>
           </div>
@@ -1662,123 +1706,100 @@ function BookingForm({
                 const next = e.target.value.replace(/[^\d\s]/g, "");
                 setCustomerPhone(next);
               }}
-              onBlur={() => setPhoneTouched(true)}
               placeholder={selectedPhoneCountry.placeholder}
               required
-              className="h-10 w-full min-w-0 bg-transparent text-sm outline-none placeholder:text-slate-400 md:text-base"
+              className="h-10 w-full min-w-0 bg-transparent text-sm outline-none placeholder:text-slate-400"
             />
           </div>
         </div>
-        <p className="mt-1.5 text-[11px] text-slate-500 md:text-xs">
-          Định dạng Việt Nam: 10 số, bắt đầu bằng 03 / 05 / 07 / 08 / 09. Có thể
-          nhập 912… hoặc 0912…
+        <p className="mt-1 text-[11px] leading-4 text-slate-500">
+          10 số, bắt đầu bằng 03 / 05 / 07 / 08 / 09. Có thể nhập 912… hoặc
+          0912…
         </p>
         {showPhoneError && (
-          <p className="mt-1 text-[11px] font-medium text-red-500 md:text-xs">
+          <p className="mt-0.5 text-[11px] font-medium leading-4 text-red-500">
             Số điện thoại Việt Nam chưa đúng định dạng.
           </p>
         )}
       </div>
 
-      <div>
-        <label className="text-xs md:text-sm font-medium mb-1 md:mb-2 block">
-          Email (tùy chọn)
-        </label>
-        <Input
-          type="email"
-          value={customerEmail}
-          onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-            setCustomerEmail(e.target.value)
-          }
-          placeholder="Nhập email để nhận xác nhận"
-          className="h-8 md:h-10 text-sm md:text-base"
-        />
-        <p className="text-xs text-gray-500 mt-1">
-          📧 Email xác nhận sẽ được gửi đến địa chỉ này
-        </p>
+      <div className="grid grid-cols-2 gap-2.5 rounded-2xl border border-orange-100 bg-white p-2.5 shadow-sm shadow-orange-100/60 sm:grid-cols-3">
+        <div>
+          <label className={labelClass}>
+            Ngày hẹn
+          </label>
+          <Input
+            type="date"
+            value={selectedDate}
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+              setSelectedDate(e.target.value)
+            }
+            min={new Date().toISOString().split("T")[0]}
+            required
+            className={fieldClass}
+          />
+        </div>
+        <div>
+          <label className="mb-1 flex items-baseline justify-between gap-1 text-xs font-medium text-slate-600">
+            <span>Giờ hẹn</span>
+            <span className="truncate font-normal text-[11px] text-slate-400">
+              {selectedDate ? bookingHours : getBranchHoursLabel(branch)}
+            </span>
+          </label>
+          <select
+            value={selectedTime}
+            onChange={(e) => setSelectedTime(e.target.value)}
+            className={selectClass}
+          >
+            <option value="">Chọn giờ</option>
+            {timeSlots.map((time) => (
+              <option key={time} value={time}>
+                {time}
+              </option>
+            ))}
+          </select>
+        </div>
+        <div className="col-span-2 sm:col-span-1">
+          <label className={labelClass}>
+            Số khách
+          </label>
+          <select
+            value={selectedCustomer}
+            onChange={(e) => setSelectedCustomer(e.target.value)}
+            className={selectClass}
+          >
+            <option value="">Chọn số lượng</option>
+            {numberCustomer.map((customer) => (
+              <option key={customer} value={customer}>
+                {customer}
+              </option>
+            ))}
+          </select>
+        </div>
       </div>
 
       <div>
-        <label className="text-xs md:text-sm font-medium mb-1 md:mb-2 block">
-          Ghi chú (tùy chọn)
+        <label className={labelClass}>
+          Ghi chú{" "}
+          <span className="font-normal text-slate-400">(tùy chọn)</span>
         </label>
-        <textarea
+        <input
           value={customerNote}
-          onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) =>
+          onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
             setCustomerNote(e.target.value)
           }
-          placeholder="Nhập ghi chú cho lịch hẹn"
-          rows={3}
-          className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm md:text-base resize-y"
+          placeholder="Ghi chú cho lịch hẹn"
+          className={selectClass}
         />
       </div>
 
-      <div>
-        <label className="text-xs md:text-sm font-medium mb-1 md:mb-2 block">
-          Ngày hẹn
-        </label>
-        <Input
-          type="date"
-          value={selectedDate}
-          onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-            setSelectedDate(e.target.value)
-          }
-          min={new Date().toISOString().split("T")[0]}
-          required
-          className="h-8 md:h-10 text-sm md:text-base"
-        />
-      </div>
-
-      <div>
-        <label className="text-xs md:text-sm font-medium mb-1 md:mb-2 block">
-          Giờ hẹn
-          <span className="text-gray-500 font-normal ml-2">
-            (Giờ hoạt động:{" "}
-            {selectedDate ? bookingHours : getBranchHoursLabel(branch)})
-          </span>
-        </label>
-        <select
-          value={selectedTime}
-          onChange={(e) => setSelectedTime(e.target.value)}
-          className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 h-8 md:h-10 text-sm md:text-base"
-        >
-          <option value="">Chọn giờ</option>
-          {timeSlots.map((time) => (
-            <option key={time} value={time}>
-              {time}
-            </option>
-          ))}
-        </select>
-        <p className="text-xs text-gray-500 mt-1">
-          🕒 Chỉ hiển thị giờ trong khung hoạt động của chi nhánh
-        </p>
-      </div>
-
-      <div>
-        <label className="text-xs md:text-sm font-medium mb-1 md:mb-2 block">
-          Số khách
-        </label>
-        <select
-          value={selectedCustomer}
-          onChange={(e) => setSelectedCustomer(e.target.value)}
-          className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 h-8 md:h-10 text-sm md:text-base"
-        >
-          <option value="">Chọn số lượng</option>
-          {numberCustomer.map((customer) => (
-            <option key={customer} value={customer}>
-              {customer}
-            </option>
-          ))}
-        </select>
-      </div>
-
-      <Button
+      <button
         type="submit"
-        className="w-full bg-orange-500 h-8 md:h-10 text-sm md:text-base"
         disabled={isSubmitting}
+        className="h-10 w-full rounded-xl bg-gradient-to-r from-orange-500 to-red-500 text-sm font-semibold text-white shadow-md shadow-orange-200/80 transition hover:from-orange-600 hover:to-red-600 disabled:cursor-not-allowed disabled:opacity-60"
       >
         {isSubmitting ? "Đang xử lý..." : "Xác nhận đặt lịch"}
-      </Button>
+      </button>
 
       {isClient &&
         showNonVnPhoneNotice &&
@@ -1822,18 +1843,6 @@ function BookingForm({
               <div className="space-y-4 px-5 py-5">
                 <div className="rounded-xl bg-orange-50/80 px-3.5 py-3">
                   <p className="mb-1.5 text-[11px] font-semibold uppercase tracking-wide text-orange-600">
-                    Tiếng Việt
-                  </p>
-                  <p className="text-sm leading-relaxed text-slate-700">
-                    Đội ngũ chăm sóc khách hàng Face Wash Fox chỉ có thể chủ
-                    động liên lạc với bạn khi số điện thoại là số Việt Nam.
-                    Trường hợp khác, vui lòng liên hệ qua Fanpage để được hỗ
-                    trợ nhanh nhất hoặc qua Hotline.
-                  </p>
-                </div>
-
-                <div className="rounded-xl bg-slate-50 px-3.5 py-3">
-                  <p className="mb-1.5 text-[11px] font-semibold uppercase tracking-wide text-slate-500">
                     English
                   </p>
                   <p className="text-sm leading-relaxed text-slate-700">
@@ -1841,6 +1850,18 @@ function BookingForm({
                     if your phone number is a Vietnamese number. Otherwise,
                     please contact us via our Fanpage for the fastest support,
                     or call our Hotline.
+                  </p>
+                </div>
+
+                <div className="rounded-xl bg-slate-50 px-3.5 py-3">
+                  <p className="mb-1.5 text-[11px] font-semibold uppercase tracking-wide text-slate-500">
+                    Tiếng Việt
+                  </p>
+                  <p className="text-sm leading-relaxed text-slate-700">
+                    Đội ngũ chăm sóc khách hàng Face Wash Fox chỉ có thể chủ
+                    động liên lạc với bạn khi số điện thoại là số Việt Nam.
+                    Trường hợp khác, vui lòng liên hệ qua Fanpage để được hỗ
+                    trợ nhanh nhất hoặc qua Hotline.
                   </p>
                 </div>
 
